@@ -1,72 +1,68 @@
-# 🏎️ FuelRushMaui — AAA .NET MAUI 3D Racing Simulator
+<div align="center">
+  <img src="Resources/Images/game_icon.png" width="140" alt="Fuel Rush Maui Icon" />
+  <h1 style="font-family: 'Montserrat', sans-serif; color: #113979; font-size: 34px; margin-top: 10px;">FuelRushMaui</h1>
+  <p style="font-family: 'Montserrat', sans-serif; color: #475569; font-size: 16px;"><b>AAA .NET MAUI 3D Racing Simulator &amp; Performance Showcase</b></p>
 
-[![Framework](https://img.shields.io/badge/.NET%20MAUI-net10.0-512BD4?style=for-the-badge&logo=dotnet)](https://dotnet.microsoft.com/en-us/apps/maui)
-[![Language](https://img.shields.io/badge/C%23-10.0-239120?style=for-the-badge&logo=c-sharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
-[![Platforms](https://img.shields.io/badge/Platforms-Android%20%7C%20iOS%20%7C%20Windows%20%7C%20macOS-00E5FF?style=for-the-badge)](https://dotnet.microsoft.com/en-us/apps/maui)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
-
-An arcade 3D racing simulator designed, architected, and engineered in **.NET MAUI** featuring custom canvas graphics rendering, 60 FPS real-time physics, interactive steering wheel gesture controls, dynamic particle systems, and 6 generations of iconic Ford Mustang vehicles linked to scenario achievement unlocks.
-
----
-
-## 🌟 Creator & Project Highlights
-
-> **Designed, Architected & Engineered by Balaji ([@praveshbalaji](https://github.com/praveshbalaji))**
-> 
-> *Showcasing advanced cross-platform .NET MAUI software engineering, complex game physics calculations, custom canvas drawing, and AI-accelerated rapid development—concept to production-grade deployment delivered in **under 1 week**.*
-
-### ⚡ Rapid AI-Accelerated Engineering
-This project stands as a benchmark for modern AI-assisted software architecture. By leveraging generative AI pair programming for real-time image asset processing, mathematical gesture physics, and cross-platform XAML/C# optimization, full multiplatform delivery was achieved seamlessly across **Android, iOS, Windows, and macOS**.
+  <p>
+    <a href="https://dotnet.microsoft.com/en-us/apps/maui"><img src="https://img.shields.io/badge/.NET%20MAUI-net10.0-512BD4?style=for-the-badge&logo=dotnet" alt=".NET MAUI" /></a>
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases"><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows%20%7C%20macOS-113979?style=for-the-badge" alt="Platforms" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" /></a>
+  </p>
+</div>
 
 ---
 
-## 🚀 Key Architectural & Game Features
+<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">📲 Download &amp; Play</h2>
 
-### 1. 🏎️ Custom 60 FPS Graphics & Canvas Game Engine
-- **Direct Canvas Rendering**: Engineered on `Microsoft.Maui.Graphics` with `IDrawable` and `GraphicsView` for high-performance 60 FPS rendering.
-- **Dynamic Environment**: Features a 5-lane scrolling highway, off-road terrain, night sky parallax background, glowing curb blocks, and street light poles.
-- **Visual Effects**: Nitro speed blur streak lines, camera shake recoil on boost/collisions, and real-time particle engine for sparks, smoke, and exhaust nitro flames.
+Experience the simulator directly on your Android device:
 
-### 2. 🛞 Real-Time Steering Wheel Physics & Controls
-- **Tactile Gesture Rotation**: Interactive 3D Ford Mustang steering wheel with center-axis rotation (-90° to +90°).
-- **Smooth Analog Easing**: Built with continuous normalized float mapping (`-1.0` to `+1.0`) and cubic spring return-to-center physics (`AnimateSteeringReturnToCenter`) to prevent snap rotation.
-- **Simulator HUD Pedals**: Ribbed brake pedal with decelerator physics and tall chrome accelerator pedal with progressive RPM revving.
+<div align="center" style="margin: 20px 0;">
+  <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest" style="background-color: #113979; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 18px; padding: 14px 28px; text-decoration: none; border-radius: 12px; display: inline-block;">
+    📥 DOWNLOAD LATEST ANDROID APK
+  </a>
+</div>
 
-### 3. 🏆 Mustang Garage & Scenario Achievement System
-Includes 6 generations of Ford Mustang vehicles with custom performance specifications (Top Speed, Acceleration, Fuel Efficiency, Handling):
+> **🛡️ Trust & Safety Statement**  
+> *Note: Because this app is self-published to showcase my full-stack .NET MAUI skills, Android will ask you to allow installation from 'Unknown Sources'. The APK is cryptographically signed and perfectly safe.*
 
-| # | Generation | Mustang Model | Scenario Unlock Achievement Milestone |
+---
+
+<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">🌟 Project Overview &amp; Architecture</h2>
+
+**FuelRushMaui** is an arcade 3D racing simulator designed and engineered from scratch in **.NET MAUI (C# 10)**. It serves as an architectural showcase demonstrating real-time 60 FPS canvas graphics, continuous vector physics, interactive touch gesture steering controls, multi-tier state management, and multiplatform delivery.
+
+### ⚡ Architectural Highlights
+- <b style="color: #113979;">Custom 60 FPS Canvas Engine</b>: Built entirely on `Microsoft.Maui.Graphics` with real-time vector highway rendering, dynamic particle systems (nitro exhaust flames, road sparks, smoke), off-road terrain parallax, and camera shake physics.
+- <b style="color: #113979;">Tactile Steering Wheel Controls</b>: Real-time 3D Ford Mustang steering wheel featuring 90° center-axis rotation, normalized touch-drag gesture mapping (`-1.0` to `+1.0`), and cubic spring return-to-center physics.
+- <b style="color: #113979;">Mustang Garage &amp; Scenario Achievement System</b>: Features 6 generations of Ford Mustang vehicles (1965 Fastback to 2024 Dark Horse) unlocked dynamically via fixed scenario completion metrics (level gas stations, top speed thresholds, coin milestones).
+- <b style="color: #113979;">AI-Accelerated Engineering</b>: Engineered in **under 1 week** utilizing generative AI pair programming for real-time asset processing, mathematical gesture curve optimization, and cross-platform compilation.
+
+---
+
+<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">🏎️ Mustang Garage Lineup</h2>
+
+<div align="center">
+  <img src="Resources/Images/car_mustang_1965.png" width="48%" alt="1965 Mustang" />
+  <img src="Resources/Images/car_mustang_2024.png" width="48%" alt="2024 Dark Horse" />
+</div>
+
+| # | Generation | Mustang Model | Unlock Achievement Milestone |
 |---|---|---|---|
-| **1** | **Gen 1 (1965)** | **1965 Mustang Fastback GT** | 🏆 **Scenario 1: Vintage Pioneer** (Default Starter Car) |
-| **2** | **Gen 2 (1974)** | **1974 Mustang II Coupe** | 🏆 **Scenario 2: Gas Station Pioneer** (Reach Gas Station #1) |
-| **3** | **Gen 3 (1990)** | **1990 Fox Body GT** | 🏆 **Scenario 3: Coin Collector** (Accumulate 100 Coins) |
+| **1** | **Gen 1 (1965)** | **1965 Mustang Fastback GT** | 🏆 **Scenario 1: Vintage Pioneer** (Default Starter) |
+| **2** | **Gen 2 (1974)** | **1974 Mustang II Coupe** | 🏆 **Scenario 2: Gas Station Pioneer** (Reach Level 1) |
+| **3** | **Gen 3 (1990)** | **1990 Fox Body GT** | 🏆 **Scenario 3: Coin Collector** (Collect 100 Coins) |
 | **4** | **Gen 4 (2003)** | **2003 SVT Cobra Mystichrome** | 🏆 **Scenario 4: Velocity Master** (Reach 180 KM/H Speed) |
-| **5** | **Gen 5 (2013)** | **2013 Shelby GT500** | 🏆 **Scenario 5: Endurance Legend** (Reach Gas Station #4) |
-| **6** | **Gen 6 (2024)** | **2024 Mustang Dark Horse** | 🏆 **Scenario 6: Game Completion Master** (100% Game Completion) |
-
-### 4. ⚡ Turbo Car Motion Loader & Custom App Icon
-- Custom high-impact app logo icon featuring neon green "FUEL RUSH" typography and carbon fiber running horse badge.
-- Motion loader screen featuring a driving Mustang with neon green turbo flame boost trails across a speed track with real-time percentage progress.
+| **5** | **Gen 5 (2013)** | **2013 Shelby GT500** | 🏆 **Scenario 5: Endurance Legend** (Reach Level 4) |
+| **6** | **Gen 6 (2024)** | **2024 Mustang Dark Horse** | 🏆 **Scenario 6: Game Completion Master** (100% Master) |
 
 ---
 
-## 🛠️ Technology Stack
-
-- **Framework**: .NET MAUI (.NET 10.0)
-- **Language**: C# 10.0 / XAML
-- **Graphics & Physics**: `Microsoft.Maui.Graphics`, Custom Vector Physics Engine, Math Easing Curves
-- **State & Data**: Local persistent storage service, High scores, Preference JSON serialization
-- **Target Platforms**: Android (API 21+), iOS (15+), macOS (MacCatalyst), Windows (WinUI 3)
-
----
-
-## 💻 Getting Started & Running Locally
+<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">💻 Local Build &amp; Compilation</h2>
 
 ### Prerequisites
-- [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
-- Visual Studio 2022 / VS Code with .NET MAUI workload installed
+- [.NET 10.0 Preview SDK](https://dotnet.microsoft.com/download)
+- Visual Studio 2022 / VS Code with .NET MAUI Workload
 
-### Clone & Run
 ```bash
 # Clone the repository
 git clone https://github.com/praveshbalaji/FuelRushMaui.git
@@ -74,21 +70,15 @@ git clone https://github.com/praveshbalaji/FuelRushMaui.git
 # Navigate to project folder
 cd FuelRushMaui
 
-# Restore dependencies & build for Windows
-dotnet build -c Debug -f net10.0-windows10.0.19041.0
+# Restore & build for Windows
+dotnet build FuelRushMaui.csproj -f net10.0-windows10.0.19041.0 -c Debug
 
-# Run project
+# Run application
 dotnet run -f net10.0-windows10.0.19041.0
 ```
 
 ---
 
-## 📄 License
-Distributed under the **MIT License**. See `LICENSE` for details.
+<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">🤝 License &amp; Contact</h2>
 
----
-
-## 🤝 Connect & Contact
-Built with passion by **Balaji**.
-- **GitHub**: [@praveshbalaji](https://github.com/praveshbalaji)
-- **LinkedIn**: [Connect on LinkedIn](https://www.linkedin.com/in/praveshbalaji/)
+Designed and developed with passion by **Balaji ([@praveshbalaji](https://github.com/praveshbalaji))**. Distributed under the **MIT License**.
