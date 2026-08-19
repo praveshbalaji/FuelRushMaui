@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FuelRushMaui.Views.HighScoresModalView">
+    <Border BackgroundColor="#121622"
+            Stroke="#FFD700"
+            StrokeThickness="2"
+            Padding="24"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="380">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="24"/>
+        </Border.StrokeShape>
+
+        <StackLayout Spacing="16">
+            <Label Text="🏆 TOP RACERS"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#FFD700"
+                   HorizontalOptions="Center" />
+
+            <CollectionView x:Name="cvScores" HeightRequest="260">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="#1A202C"
+                                Padding="12,8"
+                                Margin="0,4"
+                                StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12"/>
+                            </Border.StrokeShape>
+                            <Grid ColumnDefinitions="30,*,Auto,Auto">
+                                <Label Text="🏆" FontSize="14" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding PlayerName}" FontSize="14" FontAttributes="Bold" TextColor="#FFFFFF" VerticalOptions="Center" />
+                                <Label Grid.Column="2" Text="{Binding DistanceKm, StringFormat='{0:0.0} km'}" FontSize="12" TextColor="#00E5FF" Margin="8,0" VerticalOptions="Center" />
+                                <Label Grid.Column="3" Text="{Binding Score}" FontSize="15" FontAttributes="Bold" TextColor="#FFD700" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="CLOSE" Clicked="OnCloseClicked" BackgroundColor="#2D3748" TextColor="#FFFFFF" CornerRadius="12" HeightRequest="44" />
+        </StackLayout>
+    </Border>
+</ContentView>

@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:FuelRushMaui.Views"
+             x:Class="FuelRushMaui.MainPage"
+             BackgroundColor="#070A10"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+
+    <Grid x:Name="rootGrid">
+
+        <!-- 1. 3D CHASE CAMERA GAME CANVAS & ENVIRONMENT -->
+        <GraphicsView x:Name="gameGraphicsView"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand" />
+
+        <!-- 2. AAA MOBILE RACING SIMULATOR HUD LAYER (Safe Off-Road Padding 52,16,52,16) -->
+        <Grid x:Name="hudLayer" IsVisible="False" Padding="52,16,52,16">
+
+            <!-- Top Left: Camera Perspective Toggle Button (Positioned next to Mini-map) -->
+            <StackLayout Orientation="Horizontal" Spacing="10" HorizontalOptions="Start" VerticalOptions="Start" Margin="140,12,0,0">
+                <Button Text="🎥"
+                        FontSize="18"
+                        Clicked="OnCameraSwitchClicked"
+                        BackgroundColor="#CC0F172A"
+                        TextColor="#FFFFFF"
+                        CornerRadius="20"
+                        WidthRequest="42"
+                        HeightRequest="42">
+                    <Button.Shadow>
+                        <Shadow Brush="#000000" Offset="0,3" Radius="8" Opacity="0.6" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+
+            <!-- Top Right: Gas Station Alert Pill, Speedometer & Pause Button -->
+            <StackLayout HorizontalOptions="End" VerticalOptions="Start" Margin="0,4,0,0" Spacing="6">
+                <!-- Gas Station Target Alert Pill (Positioned cleanly directly ABOVE Speedometer) -->
+                <Border BackgroundColor="#EE0A0E17" Stroke="#113979" StrokeThickness="2" Padding="14,6" HorizontalOptions="End">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16"/>
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="#000000" Offset="0,4" Radius="10" Opacity="0.7" />
+                    </Border.Shadow>
+                    <StackLayout Orientation="Horizontal" Spacing="6">
+                        <Label Text="⛽ GAS STATION:" FontFamily="MontserratBold" FontSize="12" TextColor="#FFD700" VerticalOptions="Center" />
+                        <Label x:Name="lblTargetDistance" Text="0.0 / 2.5 KM" FontFamily="MontserratBold" FontSize="12" TextColor="#00E5FF" VerticalOptions="Center" />
+                    </StackLayout>
+                </Border>
+
+                <!-- Speedometer & Pause Button Row -->
+                <Grid ColumnDefinitions="Auto,Auto" HorizontalOptions="End">
+                    <!-- Large Stylized Speedometer Text -->
+                    <StackLayout Orientation="Horizontal" Spacing="2">
+                        <Label x:Name="lblSpeed" Text="80" FontFamily="MontserratBold" FontSize="44" FontAttributes="Bold,Italic" TextColor="#FFFFFF">
+                            <Label.Shadow>
+                                <Shadow Brush="#000000" Offset="2,2" Radius="6" Opacity="0.9" />
+                            </Label.Shadow>
+                        </Label>
+                        <Label Text="KM/H" FontFamily="MontserratBold" FontSize="16" FontAttributes="Bold,Italic" TextColor="#E2E8F0" VerticalOptions="End" Margin="4,0,0,8" />
+                    </StackLayout>
+
+                    <!-- Pause Button -->
+                    <Button Grid.Column="1"
+                            Text="⏸"
+                            FontSize="18"
+                            Clicked="OnPauseClicked"
+                            BackgroundColor="#CC0F172A"
+                            TextColor="#FFFFFF"
+                            CornerRadius="12"
+                            WidthRequest="42"
+                            HeightRequest="42"
+                            Margin="14,0,0,0">
+                        <Button.Shadow>
+                            <Shadow Brush="#000000" Offset="0,3" Radius="8" Opacity="0.6" />
+                        </Button.Shadow>
+                    </Button>
+                </Grid>
+
+                <!-- Educational Coasting Indicator Badge -->
+                <Border x:Name="badgeCoasting" IsVisible="False" BackgroundColor="#E6052E16" Stroke="#00FF88" StrokeThickness="1.5" Padding="10,3" HorizontalOptions="End">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12"/>
+                    </Border.StrokeShape>
+                    <Label Text="🌱 COASTING (SAVING FUEL!)" FontFamily="MontserratBold" FontSize="11" TextColor="#00FF88" FontAttributes="Bold" />
+                </Border>
+
+                <!-- Car Flip / Position Reset Button -->
+                <Button Text="🔄"
+                        FontSize="16"
+                        Clicked="OnResetCarClicked"
+                        BackgroundColor="#CC0F172A"
+                        TextColor="#00E5FF"
+                        CornerRadius="18"
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        HorizontalOptions="End">
+                    <Button.Shadow>
+                        <Shadow Brush="#000000" Offset="0,3" Radius="6" Opacity="0.5" />
+                    </Button.Shadow>
+                </Button>
+            </StackLayout>
+
+            <!-- Bottom Left: Realistic 3D Interactive Steering Wheel (Attachment 2 Floating Style) -->
+            <Grid x:Name="steeringWheelContainer"
+                  HorizontalOptions="Start"
+                  VerticalOptions="End"
+                  Margin="20,0,0,8"
+                  WidthRequest="160"
+                  HeightRequest="160">
+
+                <!-- Realistic 3D Steering Wheel Image with True Center-Axis Physics -->
+                <Image x:Name="imgSteeringWheel"
+                       Source="steering_wheel_3d.png"
+                       Aspect="AspectFit"
+                       AnchorX="0.5"
+                       AnchorY="0.5"
+                       HorizontalOptions="Fill"
+                       VerticalOptions="Fill">
+                    <Image.Shadow>
+                        <Shadow Brush="#000000" Offset="0,6" Radius="14" Opacity="0.8" />
+                    </Image.Shadow>
+                </Image>
+
+                <Grid.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnSteeringWheelPanUpdated" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+            <!-- Bottom Right: Single Clean Circular NOS Button & Chrome Pedals (Aligned Flush Right) -->
+            <StackLayout HorizontalOptions="End" VerticalOptions="End" Margin="0,0,0,8" Spacing="10">
+                
+                <!-- Single Clean Circular Neon Cyan NOS Button -->
+                <Button x:Name="btnNitro"
+                        Text="⚡ NOS"
+                        Clicked="OnNitroClicked"
+                        BackgroundColor="#EE0A0E17"
+                        BorderColor="#00E5FF"
+                        BorderWidth="2.5"
+                        CornerRadius="32"
+                        WidthRequest="64"
+                        HeightRequest="64"
+                        TextColor="#00E5FF"
+                        FontFamily="MontserratBold"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        HorizontalOptions="End"
+                        Margin="0,0,4,0">
+                    <Button.Shadow>
+                        <Shadow Brush="#000000" Offset="0,4" Radius="10" Opacity="0.6"/>
+                    </Button.Shadow>
+                </Button>
+
+                <!-- Simulator Pedals (Brake & Accelerator) -->
+                <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="12" HorizontalOptions="End">
+                    
+                    <!-- Ribbed Metallic Brake Pedal (Decelerates to 0 km/h) -->
+                    <Border BackgroundColor="#E61E293B" Stroke="#113979" StrokeThickness="2.5" WidthRequest="70" HeightRequest="85">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14"/>
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="#000000" Offset="0,4" Radius="10" Opacity="0.6"/>
+                        </Border.Shadow>
+                        <Button Text="||||||||&#10;BRAKE"
+                                Pressed="OnBrakePressed"
+                                Released="OnBrakeReleased"
+                                BackgroundColor="Transparent"
+                                TextColor="#FFFFFF"
+                                FontFamily="MontserratBold"
+                                FontAttributes="Bold"
+                                FontSize="11" />
+                    </Border>
+
+                    <!-- Tall Chrome Accelerator (Gas) Pedal -->
+                    <Border Grid.Column="1" BackgroundColor="#E6334155" Stroke="#FFFFFF" StrokeThickness="3" WidthRequest="66" HeightRequest="120">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16"/>
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="#000000" Offset="0,5" Radius="12" Opacity="0.7"/>
+                        </Border.Shadow>
+                        <Button Text="|||&#10;|||&#10;|||&#10;GAS"
+                                Pressed="OnGasPressed"
+                                Released="OnGasReleased"
+                                BackgroundColor="Transparent"
+                                TextColor="#FFFFFF"
+                                FontFamily="MontserratBold"
+                                FontAttributes="Bold"
+                                FontSize="12" />
+                    </Border>
+                </Grid>
+            </StackLayout>
+
+            <!-- Hidden Fuel & Coins HUD Counters -->
+            <StackLayout IsVisible="False">
+                <Label x:Name="lblFuelPct" Text="100%" />
+                <ProgressBar x:Name="pbFuelGauge" Progress="1.0" />
+                <Label x:Name="lblScore" Text="0" />
+                <Label x:Name="lblDistance" Text="0.0 km" />
+                <Label x:Name="lblCoinsHUD" Text="0" />
+            </StackLayout>
+        </Grid>
+
+        <!-- 3. LANDING PAGE OVERLAY (RESPONSIVE PORTRAIT & LANDSCAPE) -->
+        <Grid x:Name="menuOverlay" BackgroundColor="#F5070A10" Padding="0">
+            <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid Padding="24,20" VerticalOptions="Center" HorizontalOptions="Center">
+                    <StackLayout WidthRequest="440" Spacing="18" HorizontalOptions="Center">
+                        
+                        <!-- Hero Header Title & Tagline -->
+                        <StackLayout HorizontalOptions="Center" Spacing="4">
+                            <Label Text="MUSTANG"
+                                   FontSize="38"
+                                   FontAttributes="Bold"
+                                   TextColor="#00E5FF"
+                                   HorizontalTextAlignment="Center">
+                                <Label.Shadow>
+                                    <Shadow Brush="#00E5FF" Offset="0,0" Radius="16" Opacity="0.9" />
+                                </Label.Shadow>
+                            </Label>
+                            <Label Text="FUEL RUSH"
+                                   FontSize="32"
+                                   FontAttributes="Bold"
+                                   TextColor="#FFD700"
+                                   HorizontalTextAlignment="Center">
+                                <Label.Shadow>
+                                    <Shadow Brush="#FF9900" Offset="0,0" Radius="12" Opacity="0.8" />
+                                </Label.Shadow>
+                            </Label>
+                            <Border BackgroundColor="#1E293B" Padding="12,4" Stroke="#00E5FF" StrokeThickness="1" HorizontalOptions="Center" Margin="0,4,0,0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                </Border.StrokeShape>
+                                <Label Text="REAL V8 TRUCK &amp; CAR SIMULATOR"
+                                       FontSize="11"
+                                       CharacterSpacing="2"
+                                       FontAttributes="Bold"
+                                       TextColor="#CBD5E0"
+                                       HorizontalTextAlignment="Center" />
+                            </Border>
+                        </StackLayout>
+
+                        <!-- Mustang GT Showcase Glassmorphic Card -->
+                        <Border BackgroundColor="#D9161C27" Stroke="#00E5FF" StrokeThickness="1.5" Padding="16" HorizontalOptions="FillAndExpand">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20"/>
+                            </Border.StrokeShape>
+                            <StackLayout Spacing="12">
+                                
+                                <!-- Vehicle Image Frame -->
+                                <Border BackgroundColor="#0A0E17" Padding="10" Stroke="#FFD700" StrokeThickness="1.5" HeightRequest="130" HorizontalOptions="FillAndExpand">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14"/>
+                                    </Border.StrokeShape>
+                                    <Grid>
+                                        <Image Source="mustang_icon.png" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+                                        <Label Text="V8 TWIN TURBO" FontSize="10" FontAttributes="Bold" TextColor="#FFD700" BackgroundColor="#CC0A0E17" Padding="6,2" HorizontalOptions="End" VerticalOptions="Start" />
+                                    </Grid>
+                                </Border>
+
+                                <!-- Vehicle Name & Category -->
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <StackLayout Spacing="2">
+                                        <Label x:Name="lblMenuVehicle" Text="Mustang GT Shelby 5.0" FontSize="18" FontAttributes="Bold" TextColor="#FFFFFF" />
+                                        <Label Text="Iconic Muscle Legend" FontSize="12" TextColor="#94A3B8" />
+                                    </StackLayout>
+                                    <Border Grid.Column="1" BackgroundColor="#2200E5FF" Padding="8,4" StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8"/>
+                                        </Border.StrokeShape>
+                                        <Label Text="READY TO RACE" FontSize="11" FontAttributes="Bold" TextColor="#00E5FF" VerticalOptions="Center" />
+                                    </Border>
+                                </Grid>
+
+                                <!-- Performance Specs Badges Grid -->
+                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                                    <Border BackgroundColor="#0F172A" Padding="8,6" StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10"/>
+                                        </Border.StrokeShape>
+                                        <StackLayout HorizontalOptions="Center" Spacing="2">
+                                            <Label Text="⚡ POWER" FontSize="10" TextColor="#94A3B8" HorizontalTextAlignment="Center" />
+                                            <Label Text="760 HP" FontSize="12" FontAttributes="Bold" TextColor="#00FF88" HorizontalTextAlignment="Center" />
+                                        </StackLayout>
+                                    </Border>
+
+                                    <Border Grid.Column="1" BackgroundColor="#0F172A" Padding="8,6" StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10"/>
+                                        </Border.StrokeShape>
+                                        <StackLayout HorizontalOptions="Center" Spacing="2">
+                                            <Label Text="🏎 TOP SPEED" FontSize="10" TextColor="#94A3B8" HorizontalTextAlignment="Center" />
+                                            <Label Text="290 km/h" FontSize="12" FontAttributes="Bold" TextColor="#00E5FF" HorizontalTextAlignment="Center" />
+                                        </StackLayout>
+                                    </Border>
+
+                                    <Border Grid.Column="2" BackgroundColor="#0F172A" Padding="8,6" StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10"/>
+                                        </Border.StrokeShape>
+                                        <StackLayout HorizontalOptions="Center" Spacing="2">
+                                            <Label Text="🎯 HANDLING" FontSize="10" TextColor="#94A3B8" HorizontalTextAlignment="Center" />
+                                            <Label Text="9.2 / 10" FontSize="12" FontAttributes="Bold" TextColor="#FFD700" HorizontalTextAlignment="Center" />
+                                        </StackLayout>
+                                    </Border>
+                                </Grid>
+
+                            </StackLayout>
+                        </Border>
+
+                        <!-- Main Menu Action Buttons Stack -->
+                        <StackLayout Spacing="12" HorizontalOptions="FillAndExpand">
+                            <Button Text="▶ START SIMULATOR"
+                                    Clicked="OnPlayClicked"
+                                    BackgroundColor="#00E5FF"
+                                    TextColor="#070A10"
+                                    FontAttributes="Bold"
+                                    FontSize="18"
+                                    CornerRadius="18"
+                                    HeightRequest="56"
+                                    HorizontalOptions="FillAndExpand">
+                                <Button.Shadow>
+                                    <Shadow Brush="#00E5FF" Offset="0,0" Radius="12" Opacity="0.7" />
+                                </Button.Shadow>
+                            </Button>
+
+                            <Button Text="🏎 GARAGE &amp; SHOP"
+                                    Clicked="OnGarageClicked"
+                                    BackgroundColor="#1E293B"
+                                    TextColor="#FFD700"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    CornerRadius="16"
+                                    HeightRequest="48"
+                                    HorizontalOptions="FillAndExpand" />
+
+                            <Button Text="🏆 LEADERBOARD &amp; RECORDS"
+                                    Clicked="OnLeaderboardClicked"
+                                    BackgroundColor="#1E293B"
+                                    TextColor="#00E5FF"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    CornerRadius="16"
+                                    HeightRequest="48"
+                                    HorizontalOptions="FillAndExpand" />
+
+                            <Button x:Name="btnSoundToggle"
+                                    Text="🔊 AUDIO: ON"
+                                    Clicked="OnSoundToggleClicked"
+                                    BackgroundColor="Transparent"
+                                    TextColor="#94A3B8"
+                                    FontSize="13"
+                                    HorizontalOptions="Center" />
+                        </StackLayout>
+
+                    </StackLayout>
+                </Grid>
+            </ScrollView>
+        </Grid>
+
+        <!-- 4. PAUSE OVERLAY -->
+        <Grid x:Name="pauseOverlay" IsVisible="False" BackgroundColor="#D9070A10" Padding="30">
+            <Border BackgroundColor="#0F172A" Stroke="#00E5FF" StrokeThickness="2" Padding="28" WidthRequest="340" HorizontalOptions="Center" VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24"/>
+                </Border.StrokeShape>
+                <StackLayout Spacing="18">
+                    <Label Text="SIMULATOR PAUSED" FontSize="24" FontAttributes="Bold" TextColor="#00E5FF" HorizontalOptions="Center" />
+                    <Button Text="RESUME SIMULATOR" Clicked="OnPauseClicked" BackgroundColor="#00E5FF" TextColor="#070A10" FontAttributes="Bold" FontSize="16" CornerRadius="14" HeightRequest="50" />
+                    <Button Text="MAIN MENU" Clicked="OnQuitToMenuClicked" BackgroundColor="#334155" TextColor="#FFFFFF" FontSize="14" CornerRadius="14" HeightRequest="44" />
+                </StackLayout>
+            </Border>
+        </Grid>
+
+        <!-- 5. GAME OVER OVERLAY -->
+        <Grid x:Name="gameOverOverlay" IsVisible="False" BackgroundColor="#E6070A10" Padding="20">
+            <Border BackgroundColor="#0F172A" Stroke="#FF1A40" StrokeThickness="2" Padding="24" WidthRequest="360" HorizontalOptions="Center" VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="24"/>
+                </Border.StrokeShape>
+                <StackLayout Spacing="16">
+                    <Label x:Name="lblGameOverTitle" Text="OUT OF FUEL!" FontFamily="MontserratBold" FontSize="26" FontAttributes="Bold" TextColor="#FF1A40" HorizontalOptions="Center" />
+
+                    <Border BackgroundColor="#1E293B" Padding="16" StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14"/>
+                        </Border.StrokeShape>
+                        <StackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Final Score:" TextColor="#94A3B8" FontSize="14" />
+                                <Label x:Name="lblGameOverScore" Grid.Column="1" Text="0" FontAttributes="Bold" TextColor="#FFD700" FontSize="17" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Distance Covered:" TextColor="#94A3B8" FontSize="14" />
+                                <Label x:Name="lblGameOverDist" Grid.Column="1" Text="0.0 km" FontAttributes="Bold" TextColor="#00E5FF" FontSize="16" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Coins Earned:" TextColor="#94A3B8" FontSize="14" />
+                                <Label x:Name="lblGameOverCoins" Grid.Column="1" Text="+0" FontAttributes="Bold" TextColor="#00FF88" FontSize="16" />
+                            </Grid>
+                        </StackLayout>
+                    </Border>
+
+                    <Button Text="🔄 REPLAY SIMULATOR" Clicked="OnReplayClicked" BackgroundColor="#00E5FF" TextColor="#070A10" FontAttributes="Bold" FontSize="17" CornerRadius="14" HeightRequest="52" />
+                    <Button Text="MAIN MENU" Clicked="OnQuitToMenuClicked" BackgroundColor="#334155" TextColor="#FFFFFF" FontSize="14" CornerRadius="14" HeightRequest="44" />
+                </StackLayout>
+            </Border>
+        </Grid>
+
+        <!-- 6. MODALS POPUPS -->
+        <views:GarageModalView x:Name="garageModal" IsVisible="False" OnClosed="OnModalClosed" />
+        <views:HighScoresModalView x:Name="scoresModal" IsVisible="False" OnClosed="OnModalClosed" />
+
+    </Grid>
+</ContentPage>

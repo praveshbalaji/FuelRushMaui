@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FuelRushMaui.Views.LoadingPage"
+             BackgroundColor="#070A10"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <!-- Dark Cyber Environment Background Grid -->
+        <BoxView Color="#070A10" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+        <StackLayout Spacing="20" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="360" Padding="20">
+            
+            <!-- Main Game App Icon Badge (User Requested Icon) -->
+            <Border BackgroundColor="#111827"
+                    Stroke="#00FF88"
+                    StrokeThickness="2.5"
+                    Padding="12"
+                    HorizontalOptions="Center"
+                    WidthRequest="160"
+                    HeightRequest="160">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="36"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#00FF88" Offset="0,0" Radius="18" Opacity="0.7" />
+                </Border.Shadow>
+
+                <Image Source="game_icon.png"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       WidthRequest="140"
+                       HeightRequest="140" />
+            </Border>
+
+            <!-- Title & Subtitle -->
+            <StackLayout Spacing="4" HorizontalOptions="Center">
+                <Label Text="FUEL RUSH"
+                       FontSize="30"
+                       FontFamily="MontserratBold"
+                       FontAttributes="Bold"
+                       TextColor="#00FF88"
+                       HorizontalTextAlignment="Center">
+                    <Label.Shadow>
+                        <Shadow Brush="#00FF88" Offset="0,0" Radius="10" Opacity="0.9" />
+                    </Label.Shadow>
+                </Label>
+                <Label Text="MUSTANG SIMULATOR APEX"
+                       FontSize="11"
+                       CharacterSpacing="3"
+                       FontAttributes="Bold"
+                       TextColor="#00E5FF"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+
+            <!-- TURBO CAR MOVING MOTION LOADER TRACK -->
+            <Border BackgroundColor="#0F1420"
+                    Stroke="#1E293B"
+                    StrokeThickness="1.5"
+                    Padding="12,16"
+                    Margin="0,10,0,0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#000000" Offset="0,6" Radius="12" Opacity="0.8" />
+                </Border.Shadow>
+
+                <StackLayout Spacing="10">
+                    <!-- Turbo Track Canvas with Moving Car -->
+                    <Grid HeightRequest="70" WidthRequest="310" HorizontalOptions="Center">
+                        <!-- Speed Highway Lines Background -->
+                        <BoxView Color="#161C2A" CornerRadius="8" HeightRequest="20" VerticalOptions="Center" />
+                        <BoxView Color="#00FF88" Opacity="0.3" HeightRequest="2" VerticalOptions="Center" />
+                        
+                        <!-- Animated Moving Turbo Mustang Car -->
+                        <Image x:Name="imgTurboCar"
+                               Source="turbo_car_loader.png"
+                               Aspect="AspectFit"
+                               WidthRequest="110"
+                               HeightRequest="60"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center"
+                               TranslationX="0" />
+                    </Grid>
+
+                    <!-- Neon Green Progress Bar -->
+                    <Grid ColumnDefinitions="*,Auto">
+                        <ProgressBar x:Name="pbLoading" Progress="0.0" ProgressColor="#00FF88" HeightRequest="8" VerticalOptions="Center" />
+                        <Label x:Name="lblProgressPct" Text="0%" FontSize="12" FontAttributes="Bold" TextColor="#00FF88" Grid.Column="1" Margin="8,0,0,0" VerticalOptions="Center" />
+                    </Grid>
+
+                    <!-- Status Text -->
+                    <Label x:Name="lblStatus"
+                           Text="⚡ INJECTING NITRO FUEL..."
+                           FontSize="11"
+                           CharacterSpacing="1.5"
+                           FontAttributes="Bold"
+                           TextColor="#94A3B8"
+                           HorizontalTextAlignment="Center" />
+                </StackLayout>
+            </Border>
+
+        </StackLayout>
+    </Grid>
+
+</ContentPage>

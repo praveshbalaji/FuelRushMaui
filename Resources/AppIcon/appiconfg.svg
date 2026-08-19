@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="fgGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFD700"/>
+            <stop offset="100%" stop-color="#FFA500"/>
+        </linearGradient>
+        <linearGradient id="fgCyan" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#00E5FF"/>
+            <stop offset="100%" stop-color="#0088FF"/>
+        </linearGradient>
+    </defs>
+    <g transform="translate(0, 0)">
+        <!-- Outer Steering Ring -->
+        <circle cx="228" cy="228" r="110" fill="none" stroke="url(#fgCyan)" stroke-width="18"/>
+        <!-- 3 Spokes -->
+        <path d="M 228 118 L 228 190" stroke="url(#fgCyan)" stroke-width="16" stroke-linecap="round"/>
+        <path d="M 128 270 L 195 240" stroke="url(#fgCyan)" stroke-width="16" stroke-linecap="round"/>
+        <path d="M 328 270 L 261 240" stroke="url(#fgCyan)" stroke-width="16" stroke-linecap="round"/>
+        <!-- Center GT Hub -->
+        <circle cx="228" cy="228" r="42" fill="#0A0E17" stroke="url(#fgGold)" stroke-width="6"/>
+        <!-- Mustang Horse / GT Text Emblem -->
+        <text x="228" y="237" font-family="Arial, sans-serif" font-weight="900" font-size="28" fill="url(#fgGold)" text-anchor="middle">GT</text>
+        <!-- Top Racing Marker -->
+        <rect x="220" y="100" width="16" height="24" fill="#FF0055" rx="4"/>
+    </g>
+</svg>

@@ -1,0 +1,40 @@
+name: Build .NET MAUI iOS App
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install .NET MAUI Workload
+        run: |
+          dotnet workload install maui-ios
+
+      - name: Build iOS Application (.ipa)
+        run: |
+          dotnet publish FuelRushMaui.slnx \
+            -f net10.0-ios \
+            -c Release \
+            -p:ArchiveOnBuild=true \
+            -p:EnableCodeSigning=false \
+            -p:BuildIpa=true
+
+      - name: Upload iOS Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: FuelRushMaui-iOS-Build
+          path: |
+            **/publish/*.ipa
+            **/publish/*.app

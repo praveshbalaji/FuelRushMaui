@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FuelRushMaui.Views.GarageModalView">
+    <Border BackgroundColor="#0F1420"
+            Stroke="#00E5FF"
+            StrokeThickness="2.5"
+            Padding="20,16"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="440">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="24"/>
+        </Border.StrokeShape>
+        <Border.Shadow>
+            <Shadow Brush="#000000" Offset="0,10" Radius="20" Opacity="0.8" />
+        </Border.Shadow>
+
+        <StackLayout Spacing="12">
+            <!-- Header Title & Coins -->
+            <Grid ColumnDefinitions="*,Auto">
+                <StackLayout>
+                    <Label Text="MUSTANG GARAGE &amp; UPGRADES"
+                           FontSize="18"
+                           FontFamily="MontserratBold"
+                           FontAttributes="Bold"
+                           TextColor="#00E5FF" />
+                    <Label Text="6 GENERATIONS OF MUSCLE"
+                           FontSize="10"
+                           TextColor="#94A3B8" />
+                </StackLayout>
+                
+                <Border Grid.Column="1"
+                        BackgroundColor="#1E1B4B"
+                        Stroke="#FFD700"
+                        StrokeThickness="1.5"
+                        Padding="10,4">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14"/>
+                    </Border.StrokeShape>
+                    <StackLayout Orientation="Horizontal" Spacing="6">
+                        <Label Text="🪙" FontSize="14" VerticalOptions="Center" />
+                        <Label x:Name="lblCoins" Text="0" FontSize="15" FontAttributes="Bold" TextColor="#FFD700" VerticalOptions="Center" />
+                    </StackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Car Display Showcase Box -->
+            <Border BackgroundColor="#161C2A"
+                    Stroke="#1E293B"
+                    StrokeThickness="1.5"
+                    Padding="12"
+                    HeightRequest="150">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16"/>
+                </Border.StrokeShape>
+                
+                <Grid>
+                    <!-- High-Res Mustang 3/4 Angle Car Preview Image -->
+                    <Image x:Name="imgCarPreview"
+                           Source="car_mustang_1965.png"
+                           Aspect="AspectFit"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           HeightRequest="120"
+                           WidthRequest="340" />
+
+                    <!-- Generation Badge Top Left -->
+                    <Border BackgroundColor="#EE0B0E14"
+                            Stroke="#00E5FF"
+                            StrokeThickness="1"
+                            Padding="8,3"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+                        <Label x:Name="lblGeneration" Text="Gen 1 (1965)" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" />
+                    </Border>
+
+                    <!-- Status Lock / Unlock Icon Badge Top Right -->
+                    <Border x:Name="badgeLockStatus"
+                            BackgroundColor="#CCFF1A3C"
+                            Padding="8,3"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10"/>
+                        </Border.StrokeShape>
+                        <Label x:Name="lblLockStatus" Text="🔒 LOCKED" FontSize="10" FontAttributes="Bold" TextColor="#FFFFFF" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Car Info Header -->
+            <StackLayout Spacing="2">
+                <Label x:Name="lblVehicleName" Text="1965 Mustang Fastback" FontSize="18" FontAttributes="Bold" TextColor="#FFFFFF" />
+                <Label x:Name="lblVehicleDesc" Text="Description..." FontSize="11" TextColor="#94A3B8" MaxLines="2" LineBreakMode="TailTruncation" />
+            </StackLayout>
+
+            <!-- Achievement / Scenario Unlock Requirement Card -->
+            <Border BackgroundColor="#0B0F19"
+                    Stroke="#334155"
+                    StrokeThickness="1"
+                    Padding="10,8">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12"/>
+                </Border.StrokeShape>
+                <StackLayout Spacing="4">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label x:Name="lblAchievementTitle" Text="🏆 Scenario 1: Vintage Pioneer" FontSize="11" FontAttributes="Bold" TextColor="#FFD700" />
+                        <Label x:Name="lblAchievementPct" Text="100%" FontSize="11" FontAttributes="Bold" TextColor="#00FF88" Grid.Column="1" />
+                    </Grid>
+                    <Label x:Name="lblAchievementDesc" Text="Default Starter Car" FontSize="10" TextColor="#CBD5E1" />
+                    <ProgressBar x:Name="pbAchievementProgress" Progress="1.0" ProgressColor="#00FF88" HeightRequest="5" />
+                </StackLayout>
+            </Border>
+
+            <!-- Performance Specs & Upgrades -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="6">
+                <!-- Top Speed -->
+                <StackLayout Spacing="2">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="TOP SPEED" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueSpeed" Text="180 km/h" FontSize="10" TextColor="#FF3366" FontAttributes="Bold" Grid.Column="1" />
+                    </Grid>
+                    <ProgressBar x:Name="pbSpeed" ProgressColor="#FF3366" HeightRequest="6" />
+                </StackLayout>
+
+                <!-- Acceleration -->
+                <StackLayout Grid.Column="1" Spacing="2">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="ACCELERATION" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueAccel" Text="1.25x" FontSize="10" TextColor="#FFD700" FontAttributes="Bold" Grid.Column="1" />
+                    </Grid>
+                    <ProgressBar x:Name="pbAccel" ProgressColor="#FFD700" HeightRequest="6" />
+                </StackLayout>
+
+                <!-- Fuel Efficiency -->
+                <StackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="FUEL SAVING" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueFuel" Text="1.0x" FontSize="10" TextColor="#00FF88" FontAttributes="Bold" Grid.Column="1" />
+                    </Grid>
+                    <ProgressBar x:Name="pbFuel" ProgressColor="#00FF88" HeightRequest="6" />
+                </StackLayout>
+
+                <!-- Handling -->
+                <StackLayout Grid.Row="1" Grid.Column="1" Spacing="2">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="STEERING" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueHandling" Text="1.10x" FontSize="10" TextColor="#00E5FF" FontAttributes="Bold" Grid.Column="1" />
+                    </Grid>
+                    <ProgressBar x:Name="pbHandling" ProgressColor="#00E5FF" HeightRequest="6" />
+                </StackLayout>
+            </Grid>
+
+            <!-- Prev / Next Navigation -->
+            <Grid ColumnDefinitions="*,*">
+                <Button x:Name="btnPrev" Text="◀ PREV CAR" Clicked="OnPrevClicked" BackgroundColor="#1E293B" TextColor="#FFFFFF" CornerRadius="12" HeightRequest="40" FontSize="12" />
+                <Button x:Name="btnNext" Grid.Column="1" Text="NEXT CAR ▶" Clicked="OnNextClicked" BackgroundColor="#1E293B" TextColor="#FFFFFF" CornerRadius="12" HeightRequest="40" FontSize="12" Margin="8,0,0,0" />
+            </Grid>
+
+            <!-- Action Button (Select / Unlock / Claim) -->
+            <Button x:Name="btnAction" Text="SELECT VEHICLE" Clicked="OnActionClicked" BackgroundColor="#00E5FF" TextColor="#0B0E14" FontAttributes="Bold" FontSize="14" CornerRadius="14" HeightRequest="46" />
+
+            <!-- Close Button -->
+            <Button Text="CLOSE GARAGE" Clicked="OnCloseClicked" BackgroundColor="Transparent" TextColor="#64748B" FontSize="12" HeightRequest="30" Margin="0,-4,0,0" />
+        </StackLayout>
+    </Border>
+</ContentView>

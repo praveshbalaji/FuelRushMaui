@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1E293B"/>
+            <stop offset="100%" stop-color="#0A0E17"/>
+        </radialGradient>
+        <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00E5FF"/>
+            <stop offset="100%" stop-color="#0088FF"/>
+        </linearGradient>
+        <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFD700"/>
+            <stop offset="100%" stop-color="#FF9900"/>
+        </linearGradient>
+    </defs>
+    <!-- Background Circle -->
+    <circle cx="228" cy="228" r="220" fill="url(#bgGlow)" stroke="#00E5FF" stroke-width="8"/>
+    <!-- Racing Stripes -->
+    <rect x="180" y="16" width="30" height="424" fill="url(#cyanGrad)" opacity="0.9"/>
+    <rect x="246" y="16" width="30" height="424" fill="url(#goldGrad)" opacity="0.9"/>
+    <circle cx="228" cy="228" r="140" fill="#0A0E17" stroke="#FFD700" stroke-width="4"/>
+</svg>

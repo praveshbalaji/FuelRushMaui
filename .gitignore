@@ -1,0 +1,24 @@
+# Build & Binary Directories
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+.vs/
+.idea/
+.vscode/
+
+# User & OS Files
+*.user
+*.userosscache
+*.sln.docstates
+.DS_Store
+Thumbs.db
+
+# MAUI Generated Artifacts
+*.apk
+*.aab
+*.ipa
+*.app
+
+# Scratch files
+scratch/
