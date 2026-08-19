@@ -47,34 +47,21 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 
-		<!-- Android Target Platform & Emulator Architecture Configurations -->
-		<RuntimeIdentifiers Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">android-arm64;android-x64</RuntimeIdentifiers>
+		<!-- Android Target Platform & Architecture Configurations -->
+		<RuntimeIdentifiers Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">android-arm64;android-x64</RuntimeIdentifiers>
 
 		<!-- Fix Android Resource Designer -->
 		<AndroidGenerateResourceDesigner Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">true</AndroidGenerateResourceDesigner>
 		<AndroidUseIntermediateDesignerFile Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">true</AndroidUseIntermediateDesignerFile>
 	</PropertyGroup>
 
-	<!-- Dedicated Android Debug Configuration (Bypasses llvm-objcopy & file locking) -->
-	<PropertyGroup Condition="'$(Configuration)' == 'Debug' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
-		<RuntimeIdentifiers>android-x64;android-arm64</RuntimeIdentifiers>
-		<EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+	<!-- Android Configuration for Standalone Installation -->
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 		<AndroidUseAssemblyStore>false</AndroidUseAssemblyStore>
-		<AndroidEnableAssemblyCompression>false</AndroidEnableAssemblyCompression>
-		<AndroidPackNativeSharedLibraries>false</AndroidPackNativeSharedLibraries>
-		<AndroidUseFastDeployment>true</AndroidUseFastDeployment>
-		<AndroidIncludeDebugSymbols>false</AndroidIncludeDebugSymbols>
+		<AndroidEnableAssemblyCompression>true</AndroidEnableAssemblyCompression>
 		<AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
 		<AndroidDexTool>d8</AndroidDexTool>
-	</PropertyGroup>
-
-	<!-- Production Android Release Keystore Signing Configuration -->
-	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
-		<AndroidKeyStore>true</AndroidKeyStore>
-		<AndroidSigningKeyStore>fuelrush.keystore</AndroidSigningKeyStore>
-		<AndroidSigningKeyAlias>fuelrush_key</AndroidSigningKeyAlias>
-		<AndroidSigningKeyPass>YourSecretPassword</AndroidSigningKeyPass>
-		<AndroidSigningStorePass>YourSecretPassword</AndroidSigningStorePass>
 	</PropertyGroup>
 
 	<ItemGroup>
