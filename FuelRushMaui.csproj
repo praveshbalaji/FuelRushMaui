@@ -28,7 +28,7 @@
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
 
 		<!-- Display name -->
-		<ApplicationTitle>FuelRushMaui</ApplicationTitle>
+		<ApplicationTitle>Fuel Rush</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.fuelrushmaui</ApplicationId>
@@ -86,5 +86,15 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
+
+	<!-- Automatically copy signed APK to fuelrush.apk -->
+	<Target Name="CreateFuelRushApkCopy" AfterTargets="BuildApk;SignAndroidPackage;Publish">
+		<ItemGroup>
+			<_ApkToCopy Include="$(TargetDir)**\*-Signed.apk" />
+			<_ApkToCopy Include="$(PublishDir)**\*-Signed.apk" />
+		</ItemGroup>
+		<Copy SourceFiles="@(_ApkToCopy)" DestinationFiles="$(PublishDir)fuelrush.apk" Condition="Exists('%(_ApkToCopy.Identity)')" />
+		<Copy SourceFiles="@(_ApkToCopy)" DestinationFiles="$(TargetDir)fuelrush.apk" Condition="Exists('%(_ApkToCopy.Identity)')" />
+	</Target>
 
 </Project>
