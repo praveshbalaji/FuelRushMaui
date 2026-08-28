@@ -73,8 +73,13 @@ namespace FuelRushMaui.ViewModels
         public void LoadVehicles()
         {
             Vehicles = _garageService.GetAllVehicles();
-            SelectedVehicle = _garageService.GetSelectedVehicle();
-            _currentIndex = Vehicles.FindIndex(v => v.Id == SelectedVehicle.Id);
+            var selected = _garageService.GetSelectedVehicle();
+            _selectedVehicle = selected;
+            OnPropertyChanged(nameof(SelectedVehicle));
+
+            _gameEngine?.SetSelectedVehicle(_selectedVehicle);
+
+            _currentIndex = Vehicles.FindIndex(v => v.Id == _selectedVehicle.Id);
             if (_currentIndex < 0) _currentIndex = 0;
             if (Vehicles.Count > 0)
             {
@@ -99,7 +104,17 @@ namespace FuelRushMaui.ViewModels
                     SelectedVehicle = CurrentVehicleView;
                 }
             }
-            LoadVehicles();
+
+            // Explicitly sync SelectedVehicle to GameEngine
+            _gameEngine?.SetSelectedVehicle(SelectedVehicle);
+
+            // Update IsSelected flag across all vehicles
+            foreach (var v in Vehicles)
+            {
+                v.IsSelected = (v.Id == SelectedVehicle.Id);
+            }
+
+            CurrentVehicleView = Vehicles[_currentIndex];
         }
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

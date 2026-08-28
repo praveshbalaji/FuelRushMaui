@@ -232,38 +232,49 @@ namespace FuelRushMaui.Services
 
         private System.Threading.CancellationTokenSource? _nitroCts;
 
+        /// <summary>
+        /// Activates Nitro boost for exactly 5 seconds using a strict Task.Delay timer
+        /// combined with delta-time tick checks, preventing infinite boost hacks.
+        /// </summary>
         public async void ActivateNitro()
         {
             if (State != GameState.Playing) return;
-            if (Nitro < 25f || IsNitroActive) return;
+            if (IsNitroActive || Nitro < 25f) return;
 
-            // Deduct Nitro energy to prevent infinite boost hack
+            // Deduct Nitro energy tank (requires 25% minimum per activation)
             Nitro = Math.Max(0f, Nitro - 25f);
             IsNitroActive = true;
-            NitroTimer = 5.0f; // Strict 5-second boost duration
+            NitroTimer = 5.0f; // Strict 5.0s duration countdown
             _soundService.PlayNitroBoost();
 
+            // Cancel any existing running timer
             _nitroCts?.Cancel();
             _nitroCts = new System.Threading.CancellationTokenSource();
             var token = _nitroCts.Token;
 
             try
             {
-                // Strict 5-second timer for nitro timeout
+                // Enforce strict 5-second asynchronous timeout
                 await System.Threading.Tasks.Task.Delay(5000, token);
-                if (!token.IsCancellationRequested)
+                if (!token.IsCancellationRequested && IsNitroActive)
                 {
                     DeactivateNitro();
                 }
             }
             catch (System.Threading.Tasks.TaskCanceledException)
             {
-                // Timer cancelled on pause/reset
+                // Suppress exception when cancelled by pause, reset, or game over
             }
         }
 
+        /// <summary>
+        /// Reverts vehicle to base speed, base fuel consumption, and disables camera shake.
+        /// </summary>
         public void DeactivateNitro()
         {
+            _nitroCts?.Cancel();
+            _nitroCts = null;
+
             IsNitroActive = false;
             NitroTimer = 0f;
             CameraShakeX = 0f;
@@ -358,9 +369,7 @@ namespace FuelRushMaui.Services
 
                 if (NitroTimer <= 0f)
                 {
-                    IsNitroActive = false;
-                    CameraShakeX = 0f;
-                    CameraShakeY = 0f;
+                    DeactivateNitro();
                 }
             }
             else

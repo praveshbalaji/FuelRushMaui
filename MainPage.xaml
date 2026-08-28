@@ -243,20 +243,20 @@
                         </StackLayout>
 
                         <!-- Mustang GT Showcase Glassmorphic Card -->
-                        <Border BackgroundColor="#D9161C27" Stroke="#00E5FF" StrokeThickness="1.5" Padding="16" HorizontalOptions="FillAndExpand">
+                        <Border BackgroundColor="#D9161C27" Stroke="#113979" StrokeThickness="1.5" Padding="16" HorizontalOptions="FillAndExpand">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="20"/>
                             </Border.StrokeShape>
                             <StackLayout Spacing="12">
                                 
                                 <!-- Vehicle Image Frame -->
-                                <Border BackgroundColor="#0A0E17" Padding="10" Stroke="#FFD700" StrokeThickness="1.5" HeightRequest="130" HorizontalOptions="FillAndExpand">
+                                <Border BackgroundColor="#0A0E17" Padding="10" Stroke="#113979" StrokeThickness="1.5" HeightRequest="130" HorizontalOptions="FillAndExpand">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="14"/>
                                     </Border.StrokeShape>
-                                    <Grid>
-                                        <Image Source="mustang_icon.png" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
-                                        <Label Text="V8 TWIN TURBO" FontSize="10" FontAttributes="Bold" TextColor="#FFD700" BackgroundColor="#CC0A0E17" Padding="6,2" HorizontalOptions="End" VerticalOptions="Start" />
+                                    <Grid BackgroundColor="Transparent">
+                                        <Image x:Name="imgMenuVehicle" Source="car_mustang_1965.png" BackgroundColor="Transparent" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+                                        <Label Text="V8 TWIN TURBO" FontFamily="MontserratBold" FontSize="10" FontAttributes="Bold" TextColor="#FFD700" BackgroundColor="#CC0A0E17" Padding="6,2" HorizontalOptions="End" VerticalOptions="Start" />
                                     </Grid>
                                 </Border>
 

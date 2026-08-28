@@ -49,14 +49,14 @@
             <!-- Car Display Showcase Box -->
             <Border BackgroundColor="#161C2A"
                     Stroke="#113979"
-                    StrokeThickness="1.5"
+                    StrokeThickness="2"
                     Padding="12"
                     HeightRequest="150">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="16"/>
                 </Border.StrokeShape>
                 
-                <Grid>
+                <Grid BackgroundColor="Transparent">
                     <!-- High-Res Mustang 3/4 Angle Car Preview Image (Transparent Background) -->
                     <Image x:Name="imgCarPreview"
                            Source="car_mustang_1965.png"
@@ -69,15 +69,15 @@
 
                     <!-- Generation Badge Top Left -->
                     <Border BackgroundColor="#EE0B0E14"
-                            Stroke="#00E5FF"
-                            StrokeThickness="1"
+                            Stroke="#113979"
+                            StrokeThickness="1.5"
                             Padding="8,3"
                             HorizontalOptions="Start"
                             VerticalOptions="Start">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
-                        <Label x:Name="lblGeneration" Text="Gen 1 (1965)" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" />
+                        <Label x:Name="lblGeneration" Text="Gen 1 (1965)" FontFamily="MontserratBold" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" />
                     </Border>
 
                     <!-- Status Lock / Unlock Icon Badge Top Right -->
@@ -89,31 +89,31 @@
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="10"/>
                         </Border.StrokeShape>
-                        <Label x:Name="lblLockStatus" Text="🔒 LOCKED" FontSize="10" FontAttributes="Bold" TextColor="#FFFFFF" />
+                        <Label x:Name="lblLockStatus" Text="🔒 LOCKED" FontFamily="MontserratBold" FontSize="10" FontAttributes="Bold" TextColor="#FFFFFF" />
                     </Border>
                 </Grid>
             </Border>
 
             <!-- Car Info Header -->
             <StackLayout Spacing="2">
-                <Label x:Name="lblVehicleName" Text="1965 Mustang Fastback" FontSize="18" FontAttributes="Bold" TextColor="#FFFFFF" />
-                <Label x:Name="lblVehicleDesc" Text="Description..." FontSize="11" TextColor="#94A3B8" MaxLines="2" LineBreakMode="TailTruncation" />
+                <Label x:Name="lblVehicleName" Text="1965 Mustang Fastback" FontFamily="MontserratBold" FontSize="18" FontAttributes="Bold" TextColor="#FFFFFF" />
+                <Label x:Name="lblVehicleDesc" Text="Description..." FontFamily="Montserrat" FontSize="11" TextColor="#94A3B8" MaxLines="2" LineBreakMode="TailTruncation" />
             </StackLayout>
 
             <!-- Achievement / Scenario Unlock Requirement Card -->
             <Border BackgroundColor="#0B0F19"
-                    Stroke="#334155"
-                    StrokeThickness="1"
+                    Stroke="#113979"
+                    StrokeThickness="1.5"
                     Padding="10,8">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="12"/>
                 </Border.StrokeShape>
                 <StackLayout Spacing="4">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label x:Name="lblAchievementTitle" Text="🏆 Scenario 1: Vintage Pioneer" FontSize="11" FontAttributes="Bold" TextColor="#FFD700" />
-                        <Label x:Name="lblAchievementPct" Text="100%" FontSize="11" FontAttributes="Bold" TextColor="#00FF88" Grid.Column="1" />
+                        <Label x:Name="lblAchievementTitle" Text="🏆 Scenario 1: Vintage Pioneer" FontFamily="MontserratBold" FontSize="11" FontAttributes="Bold" TextColor="#FFD700" />
+                        <Label x:Name="lblAchievementPct" Text="100%" FontFamily="MontserratBold" FontSize="11" FontAttributes="Bold" TextColor="#00FF88" Grid.Column="1" />
                     </Grid>
-                    <Label x:Name="lblAchievementDesc" Text="Default Starter Car" FontSize="10" TextColor="#CBD5E1" />
+                    <Label x:Name="lblAchievementDesc" Text="Default Starter Car" FontFamily="Montserrat" FontSize="10" TextColor="#CBD5E1" />
                     <ProgressBar x:Name="pbAchievementProgress" Progress="1.0" ProgressColor="#00FF88" HeightRequest="5" />
                 </StackLayout>
             </Border>
@@ -123,8 +123,8 @@
                 <!-- Top Speed -->
                 <StackLayout Spacing="2">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="TOP SPEED" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
-                        <Label x:Name="lblValueSpeed" Text="180 km/h" FontSize="10" TextColor="#FF3366" FontAttributes="Bold" Grid.Column="1" />
+                        <Label Text="TOP SPEED" FontFamily="MontserratBold" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueSpeed" Text="180 km/h" FontFamily="MontserratBold" FontSize="10" TextColor="#FF3366" FontAttributes="Bold" Grid.Column="1" />
                     </Grid>
                     <ProgressBar x:Name="pbSpeed" ProgressColor="#FF3366" HeightRequest="6" />
                 </StackLayout>
@@ -132,8 +132,8 @@
                 <!-- Acceleration -->
                 <StackLayout Grid.Column="1" Spacing="2">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="ACCELERATION" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
-                        <Label x:Name="lblValueAccel" Text="1.25x" FontSize="10" TextColor="#FFD700" FontAttributes="Bold" Grid.Column="1" />
+                        <Label Text="ACCELERATION" FontFamily="MontserratBold" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueAccel" Text="1.25x" FontFamily="MontserratBold" FontSize="10" TextColor="#FFD700" FontAttributes="Bold" Grid.Column="1" />
                     </Grid>
                     <ProgressBar x:Name="pbAccel" ProgressColor="#FFD700" HeightRequest="6" />
                 </StackLayout>
@@ -141,8 +141,8 @@
                 <!-- Fuel Efficiency -->
                 <StackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="FUEL SAVING" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
-                        <Label x:Name="lblValueFuel" Text="1.0x" FontSize="10" TextColor="#00FF88" FontAttributes="Bold" Grid.Column="1" />
+                        <Label Text="FUEL SAVING" FontFamily="MontserratBold" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueFuel" Text="1.0x" FontFamily="MontserratBold" FontSize="10" TextColor="#00FF88" FontAttributes="Bold" Grid.Column="1" />
                     </Grid>
                     <ProgressBar x:Name="pbFuel" ProgressColor="#00FF88" HeightRequest="6" />
                 </StackLayout>
@@ -150,8 +150,8 @@
                 <!-- Handling -->
                 <StackLayout Grid.Row="1" Grid.Column="1" Spacing="2">
                     <Grid ColumnDefinitions="*,Auto">
-                        <Label Text="STEERING" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
-                        <Label x:Name="lblValueHandling" Text="1.10x" FontSize="10" TextColor="#00E5FF" FontAttributes="Bold" Grid.Column="1" />
+                        <Label Text="STEERING" FontFamily="MontserratBold" FontSize="10" TextColor="#94A3B8" FontAttributes="Bold" />
+                        <Label x:Name="lblValueHandling" Text="1.10x" FontFamily="MontserratBold" FontSize="10" TextColor="#00E5FF" FontAttributes="Bold" Grid.Column="1" />
                     </Grid>
                     <ProgressBar x:Name="pbHandling" ProgressColor="#00E5FF" HeightRequest="6" />
                 </StackLayout>
@@ -159,15 +159,15 @@
 
             <!-- Prev / Next Navigation -->
             <Grid ColumnDefinitions="*,*">
-                <Button x:Name="btnPrev" Text="◀ PREV CAR" Clicked="OnPrevClicked" BackgroundColor="#1E293B" TextColor="#FFFFFF" CornerRadius="12" HeightRequest="40" FontSize="12" />
-                <Button x:Name="btnNext" Grid.Column="1" Text="NEXT CAR ▶" Clicked="OnNextClicked" BackgroundColor="#1E293B" TextColor="#FFFFFF" CornerRadius="12" HeightRequest="40" FontSize="12" Margin="8,0,0,0" />
+                <Button x:Name="btnPrev" Text="◀ PREV CAR" Clicked="OnPrevClicked" BackgroundColor="#1E293B" BorderColor="#113979" BorderWidth="1" TextColor="#FFFFFF" FontFamily="MontserratBold" CornerRadius="12" HeightRequest="40" FontSize="12" />
+                <Button x:Name="btnNext" Grid.Column="1" Text="NEXT CAR ▶" Clicked="OnNextClicked" BackgroundColor="#1E293B" BorderColor="#113979" BorderWidth="1" TextColor="#FFFFFF" FontFamily="MontserratBold" CornerRadius="12" HeightRequest="40" FontSize="12" Margin="8,0,0,0" />
             </Grid>
 
             <!-- Action Button (Select / Unlock / Claim) -->
-            <Button x:Name="btnAction" Text="SELECT VEHICLE" Clicked="OnActionClicked" BackgroundColor="#00E5FF" TextColor="#0B0E14" FontAttributes="Bold" FontSize="14" CornerRadius="14" HeightRequest="46" />
+            <Button x:Name="btnAction" Text="SELECT VEHICLE" Clicked="OnActionClicked" BackgroundColor="#00E5FF" BorderColor="#113979" BorderWidth="1" TextColor="#0B0E14" FontFamily="MontserratBold" FontAttributes="Bold" FontSize="14" CornerRadius="14" HeightRequest="46" />
 
             <!-- Close Button -->
-            <Button Text="CLOSE GARAGE" Clicked="OnCloseClicked" BackgroundColor="Transparent" TextColor="#64748B" FontSize="12" HeightRequest="30" Margin="0,-4,0,0" />
+            <Button Text="CLOSE GARAGE" Clicked="OnCloseClicked" BackgroundColor="Transparent" TextColor="#64748B" FontFamily="MontserratBold" FontSize="12" HeightRequest="30" Margin="0,-4,0,0" />
         </StackLayout>
     </Border>
 </ContentView>

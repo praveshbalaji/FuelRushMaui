@@ -134,6 +134,10 @@ namespace FuelRushMaui
         {
             var selected = _garageService.GetSelectedVehicle();
             lblMenuVehicle.Text = $"{selected.Name}";
+            if (imgMenuVehicle != null)
+            {
+                imgMenuVehicle.Source = selected.ImagePath;
+            }
             btnSoundToggle.Text = _storageService.IsSoundEnabled() ? "🔊 AUDIO: ON" : "🔇 AUDIO: OFF";
         }
 

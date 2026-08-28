@@ -70,14 +70,15 @@
 
                 <StackLayout Spacing="10">
                     <!-- Turbo Track Canvas with Moving Car -->
-                    <Grid HeightRequest="70" WidthRequest="310" HorizontalOptions="Center">
+                    <Grid HeightRequest="70" WidthRequest="310" BackgroundColor="Transparent" HorizontalOptions="Center">
                         <!-- Speed Highway Lines Background -->
                         <BoxView Color="#161C2A" CornerRadius="8" HeightRequest="20" VerticalOptions="Center" />
                         <BoxView Color="#00FF88" Opacity="0.3" HeightRequest="2" VerticalOptions="Center" />
                         
-                        <!-- Animated Moving Turbo Mustang Car -->
+                        <!-- Animated Moving Turbo Mustang Car (Transparent PNG) -->
                         <Image x:Name="imgTurboCar"
                                Source="turbo_car_loader.png"
+                               BackgroundColor="Transparent"
                                Aspect="AspectFit"
                                WidthRequest="110"
                                HeightRequest="60"

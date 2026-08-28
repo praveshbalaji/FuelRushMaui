@@ -156,7 +156,10 @@ namespace FuelRushMaui.Views
                 _gameEngine.SetSelectedVehicle(_viewModel.SelectedVehicle);
             }
 
-            LoadData();
+            lblCoins.Text = _storageService?.GetTotalCoins().ToString("N0") ?? "0";
+            _vehicles = _viewModel.Vehicles;
+            _currentIndex = _viewModel.CurrentIndex;
+            UpdateUI();
         }
 
         private void OnCloseClicked(object sender, EventArgs e)

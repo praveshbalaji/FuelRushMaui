@@ -226,54 +226,110 @@ namespace FuelRushMaui.Renderers
 
                 if (obs.Type == ObstacleType.OilSlick)
                 {
-                    canvas.FillColor = Color.FromArgb("#12141D");
+                    // Oil Slick Reflective Hazard Puddle
+                    canvas.FillColor = Color.FromRgba(18, 20, 29, 230);
                     canvas.FillEllipse(-obs.Width / 2f, -obs.Height / 2f, obs.Width, obs.Height);
-                    canvas.StrokeColor = Color.FromRgba(0, 229, 255, 160);
+                    canvas.StrokeColor = Color.FromRgba(0, 229, 255, 180);
                     canvas.StrokeSize = 2;
                     canvas.DrawEllipse(-obs.Width / 2f + 4, -obs.Height / 2f + 4, obs.Width - 8, obs.Height - 8);
+                    
+                    // Rainbow sheen reflection
+                    canvas.FillColor = Color.FromRgba(255, 0, 128, 80);
+                    canvas.FillCircle(-obs.Width * 0.15f, -obs.Height * 0.1f, obs.Width * 0.25f);
                 }
                 else if (obs.Type == ObstacleType.RoadBarrier)
                 {
+                    // Construction Hazard Barrier
                     canvas.FillColor = Color.FromArgb("#FF5500");
                     canvas.FillRoundedRectangle(-obs.Width / 2f, -obs.Height / 2f, obs.Width, obs.Height, 4);
                     canvas.FillColor = Color.FromArgb("#FFFFFF");
                     canvas.FillRectangle(-16, -obs.Height / 2f, 10, obs.Height);
                     canvas.FillRectangle(6, -obs.Height / 2f, 10, obs.Height);
+                    
+                    // Warning Flasher
+                    bool blink = Math.Sin(_animTimer * 10) > 0;
+                    canvas.FillColor = blink ? Color.FromArgb("#FFD700") : Color.FromArgb("#AA7700");
+                    canvas.FillCircle(0, -obs.Height / 2f - 4, 5);
                 }
-                else
+                else if (obs.Type == ObstacleType.DeliveryTruck)
                 {
                     float w = obs.Width;
                     float h = obs.Height;
 
                     // Shadow
-                    canvas.FillColor = Color.FromRgba(0, 0, 0, 110);
-                    canvas.FillRoundedRectangle(-w / 2f + 4, -h / 2f + 8, w, h, 10);
+                    canvas.FillColor = Color.FromRgba(0, 0, 0, 120);
+                    canvas.FillRoundedRectangle(-w / 2f + 5, -h / 2f + 8, w, h, 8);
 
-                    // Car Base Body
-                    canvas.FillColor = Color.FromArgb(obs.ColorHex);
-                    canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 10);
+                    // Heavy Cargo Box Body
+                    canvas.FillColor = Color.FromArgb("#D97706");
+                    canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h * 0.72f, 6);
+                    canvas.FillColor = Color.FromArgb("#B45309");
+                    canvas.FillRectangle(-w / 2f + 3, -h / 2f + 3, w - 6, 8);
 
-                    // Windshield
-                    canvas.FillColor = Color.FromArgb("#0B0E14");
-                    canvas.FillRoundedRectangle(-w / 2f + 6, -h * 0.22f, w - 12, h * 0.45f, 6);
+                    // Truck Cabin
+                    canvas.FillColor = Color.FromArgb("#451A03");
+                    canvas.FillRoundedRectangle(-w / 2f + 2, h * 0.22f, w - 4, h * 0.28f, 6);
+
+                    // Windshield (facing down)
+                    canvas.FillColor = Color.FromArgb("#38BDF8");
+                    canvas.FillRoundedRectangle(-w / 2f + 5, h * 0.35f, w - 10, h * 0.12f, 3);
 
                     // Headlights (facing down)
-                    canvas.FillColor = Color.FromArgb("#FFEE88");
+                    canvas.FillColor = Color.FromArgb("#FFFBEB");
                     canvas.FillRectangle(-w / 2f + 4, h / 2f - 4, 10, 4);
                     canvas.FillRectangle(w / 2f - 14, h / 2f - 4, 10, 4);
 
                     // Brake Lights (top)
-                    canvas.FillColor = Color.FromArgb("#FF0033");
+                    canvas.FillColor = Color.FromArgb("#DC2626");
+                    canvas.FillRectangle(-w / 2f + 4, -h / 2f, 10, 4);
+                    canvas.FillRectangle(w / 2f - 14, -h / 2f, 10, 4);
+                }
+                else
+                {
+                    // Dynamic Sedan & Police Highway Traffic Models
+                    float w = obs.Width;
+                    float h = obs.Height;
+
+                    // Drop Shadow
+                    canvas.FillColor = Color.FromRgba(0, 0, 0, 130);
+                    canvas.FillRoundedRectangle(-w / 2f + 4, -h / 2f + 8, w, h, 10);
+
+                    // Main Chassis Body
+                    canvas.FillColor = Color.FromArgb(obs.ColorHex);
+                    canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 10);
+
+                    // Windshield & Roof Glass
+                    canvas.FillColor = Color.FromArgb("#0F172A");
+                    canvas.FillRoundedRectangle(-w / 2f + 5, -h * 0.25f, w - 10, h * 0.50f, 6);
+
+                    canvas.FillColor = Color.FromRgba(56, 189, 248, 160);
+                    canvas.FillRoundedRectangle(-w / 2f + 7, h * 0.10f, w - 14, h * 0.12f, 3);
+
+                    // Wheels
+                    canvas.FillColor = Color.FromArgb("#111111");
+                    canvas.FillRoundedRectangle(-w / 2f - 3, -h * 0.35f, 4, 16, 2);
+                    canvas.FillRoundedRectangle(w / 2f - 1, -h * 0.35f, 4, 16, 2);
+                    canvas.FillRoundedRectangle(-w / 2f - 3, h * 0.18f, 4, 16, 2);
+                    canvas.FillRoundedRectangle(w / 2f - 1, h * 0.18f, 4, 16, 2);
+
+                    // Headlights (facing traffic direction down)
+                    canvas.FillColor = Color.FromArgb("#FEF08A");
+                    canvas.FillRectangle(-w / 2f + 4, h / 2f - 4, 10, 4);
+                    canvas.FillRectangle(w / 2f - 14, h / 2f - 4, 10, 4);
+
+                    // Brake Lights (top)
+                    canvas.FillColor = Color.FromArgb("#EF4444");
                     canvas.FillRectangle(-w / 2f + 4, -h / 2f, 10, 4);
                     canvas.FillRectangle(w / 2f - 14, -h / 2f, 10, 4);
 
                     if (obs.Type == ObstacleType.PoliceCar)
                     {
-                        bool flash = Math.Sin(_animTimer * 16) > 0;
-                        canvas.FillColor = flash ? Color.FromArgb("#FF0000") : Color.FromArgb("#0066FF");
-                        canvas.FillRectangle(-10, -4, 8, 8);
-                        canvas.FillColor = !flash ? Color.FromArgb("#FF0000") : Color.FromArgb("#0066FF");
-                        canvas.FillRectangle(2, -4, 8, 8);
+                        // Highway Patrol Dual Police Strobe Lights
+                        bool flash = Math.Sin(_animTimer * 18) > 0;
+                        canvas.FillColor = flash ? Color.FromArgb("#EF4444") : Color.FromArgb("#2563EB");
+                        canvas.FillRectangle(-12, -4, 10, 8);
+                        canvas.FillColor = !flash ? Color.FromArgb("#EF4444") : Color.FromArgb("#2563EB");
+                        canvas.FillRectangle(2, -4, 10, 8);
                     }
                 }
 
@@ -292,86 +348,102 @@ namespace FuelRushMaui.Renderers
             canvas.SaveState();
             canvas.Translate(px, py);
 
-            // Rotate car slightly when steering
+            // Rotate car body slightly when steering
             canvas.Rotate(_engine.SteeringAngle * 0.35f);
 
-            // 1. Neon Underglow LED Lighting
+            // 1. Dynamic Neon Underglow LED Lighting (Uses vehicle accent/underglow color)
             Color underglowCol = Color.FromArgb(vehicle.UnderglowColor);
-            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.45f);
-            canvas.FillEllipse(-w * 0.85f, -h * 0.65f, w * 1.7f, h * 1.3f);
+            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.50f);
+            canvas.FillEllipse(-w * 0.90f, -h * 0.65f, w * 1.80f, h * 1.30f);
 
-            // 2. Headlight Forward Light Beams
-            canvas.FillColor = Color.FromRgba(255, 255, 220, 50);
+            // 2. High-Beam Forward Headlight Cones
+            canvas.FillColor = Color.FromRgba(255, 255, 220, 55);
             PathF lightBeam = new PathF();
-            lightBeam.MoveTo(-w * 0.4f, -h * 0.4f);
-            lightBeam.LineTo(-w * 1.6f, -h * 3.4f);
-            lightBeam.LineTo(w * 1.6f, -h * 3.4f);
-            lightBeam.LineTo(w * 0.4f, -h * 0.4f);
+            lightBeam.MoveTo(-w * 0.38f, -h * 0.4f);
+            lightBeam.LineTo(-w * 1.70f, -h * 3.5f);
+            lightBeam.LineTo(w * 1.70f, -h * 3.5f);
+            lightBeam.LineTo(w * 0.38f, -h * 0.4f);
             lightBeam.Close();
             canvas.FillPath(lightBeam);
 
-            // 3. Drop Shadow
-            canvas.FillColor = Color.FromRgba(0, 0, 0, 140);
-            canvas.FillRoundedRectangle(-w / 2f + 4, -h / 2f + 8, w, h, 12);
+            // 3. Chassis Drop Shadow
+            canvas.FillColor = Color.FromRgba(0, 0, 0, 150);
+            canvas.FillRoundedRectangle(-w / 2f + 4, -h / 2f + 8, w, h, 14);
 
-            // 4. Car Chassis Paint (Primary Color)
+            // 4. Dynamic Muscle Car Body Styling (Customized by selected Mustang model specs)
             Color priColor = Color.FromArgb(vehicle.PrimaryColor);
             Color secColor = Color.FromArgb(vehicle.SecondaryColor);
             Color accColor = Color.FromArgb(vehicle.AccentColor);
 
+            // Main Primary Body Paint
             canvas.FillColor = priColor;
-            canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 12);
+            canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 14);
+
+            // Front Bumper Splitter Accent
+            canvas.FillColor = accColor;
+            canvas.FillRoundedRectangle(-w / 2f + 2, -h / 2f - 2, w - 4, 6, 2);
 
             // Metallic Body Highlight Shading
-            canvas.FillColor = Color.FromRgba(255, 255, 255, 35);
-            canvas.FillRoundedRectangle(-w / 2f + 3, -h / 2f + 3, w - 6, h * 0.35f, 8);
+            canvas.FillColor = Color.FromRgba(255, 255, 255, 40);
+            canvas.FillRoundedRectangle(-w / 2f + 3, -h / 2f + 4, w - 6, h * 0.35f, 10);
 
-            // Mustang Shelby Twin Racing Stripes
+            // Twin Shelby / Dark Horse Racing Stripes
             if (vehicle.HasRacingStripes)
             {
                 canvas.FillColor = accColor;
-                canvas.FillRectangle(-7, -h / 2f, 5, h * 0.9f);
-                canvas.FillRectangle(2, -h / 2f, 5, h * 0.9f);
+                canvas.FillRectangle(-7, -h / 2f, 5, h * 0.92f);
+                canvas.FillRectangle(2, -h / 2f, 5, h * 0.92f);
             }
 
-            // Windshield & Side Windows
+            // Hood Air Scoop Extractors
+            canvas.FillColor = secColor;
+            canvas.FillRoundedRectangle(-8, -h * 0.32f, 16, 12, 3);
+
+            // Windshield & Side Glass Windows
             canvas.FillColor = secColor;
             canvas.FillRoundedRectangle(-w / 2f + 6, -h * 0.28f, w - 12, h * 0.52f, 8);
 
-            canvas.FillColor = Color.FromRgba(0, 229, 255, 170);
+            canvas.FillColor = Color.FromRgba(56, 189, 248, 180);
             canvas.FillRoundedRectangle(-w / 2f + 8, -h * 0.22f, w - 16, h * 0.20f, 4);
 
-            // Wheels with Steered Front Wheel Angle
-            canvas.FillColor = Color.FromArgb("#111111");
+            // Dynamic Steered Front Wheels
+            canvas.FillColor = Color.FromArgb("#0F172A");
+            
             canvas.SaveState();
-            // Front Left Wheel
+            // Front Left Steered Wheel
             canvas.Translate(-w / 2f - 4, -h * 0.32f);
             canvas.Rotate(_engine.SteeringAngle * 0.5f);
-            canvas.FillRoundedRectangle(-3, -10, 6, 20, 3);
+            canvas.FillRoundedRectangle(-4, -11, 7, 22, 3);
+            canvas.StrokeColor = accColor;
+            canvas.StrokeSize = 1.5f;
+            canvas.DrawRoundedRectangle(-4, -11, 7, 22, 3);
             canvas.RestoreState();
 
             canvas.SaveState();
-            // Front Right Wheel
+            // Front Right Steered Wheel
             canvas.Translate(w / 2f + 4, -h * 0.32f);
             canvas.Rotate(_engine.SteeringAngle * 0.5f);
-            canvas.FillRoundedRectangle(-3, -10, 6, 20, 3);
+            canvas.FillRoundedRectangle(-3, -11, 7, 22, 3);
+            canvas.StrokeColor = accColor;
+            canvas.StrokeSize = 1.5f;
+            canvas.DrawRoundedRectangle(-3, -11, 7, 22, 3);
             canvas.RestoreState();
 
-            // Rear Wheels
-            canvas.FillRoundedRectangle(-w / 2f - 7, h * 0.18f, 6, 20, 3);
-            canvas.FillRoundedRectangle(w / 2f + 1, h * 0.18f, 6, 20, 3);
+            // Heavy Rear Performance Wheels
+            canvas.FillRoundedRectangle(-w / 2f - 7, h * 0.18f, 7, 22, 3);
+            canvas.FillRoundedRectangle(w / 2f + 0, h * 0.18f, 7, 22, 3);
 
-            // Rear Spoiler Wing
+            // High Performance GT Rear Spoiler Wing
             if (vehicle.HasSpoiler)
             {
-                canvas.FillColor = Color.FromArgb("#0A0D14");
-                canvas.FillRoundedRectangle(-w / 2f - 4, h / 2f - 8, w + 8, 8, 3);
+                canvas.FillColor = Color.FromArgb("#0A0E17");
+                canvas.FillRoundedRectangle(-w / 2f - 5, h / 2f - 8, w + 10, 8, 3);
                 canvas.StrokeColor = accColor;
                 canvas.StrokeSize = 2;
-                canvas.DrawLine(-w / 2f - 4, h / 2f - 4, w / 2f + 4, h / 2f - 4);
+                canvas.DrawLine(-w / 2f - 5, h / 2f - 4, w / 2f + 5, h / 2f - 4);
             }
 
-            // Bright Tail Brake Lights
+            // Tail Brake Lights Bar
             canvas.FillColor = Color.FromArgb("#FF0033");
             canvas.FillRectangle(-w / 2f + 4, h / 2f - 4, 12, 4);
             canvas.FillRectangle(w / 2f - 16, h / 2f - 4, 12, 4);
@@ -380,22 +452,22 @@ namespace FuelRushMaui.Renderers
             if (_engine.IsNitroActive)
             {
                 canvas.FillColor = Color.FromArgb("#00E5FF");
-                canvas.FillCircle(-10, h / 2f + 12, 10);
-                canvas.FillCircle(10, h / 2f + 12, 10);
+                canvas.FillCircle(-10, h / 2f + 14, 11);
+                canvas.FillCircle(10, h / 2f + 14, 11);
 
                 canvas.FillColor = Color.FromArgb("#FFFFFF");
-                canvas.FillCircle(-10, h / 2f + 7, 5);
-                canvas.FillCircle(10, h / 2f + 7, 5);
+                canvas.FillCircle(-10, h / 2f + 8, 5);
+                canvas.FillCircle(10, h / 2f + 8, 5);
             }
 
             // Energy Shield Forcefield Halo
             if (_engine.IsShieldActive)
             {
-                canvas.FillColor = Color.FromRgba(0, 255, 136, 70);
-                canvas.FillCircle(0, 0, h * 0.75f);
+                canvas.FillColor = Color.FromRgba(0, 255, 136, 75);
+                canvas.FillCircle(0, 0, h * 0.78f);
                 canvas.StrokeColor = Color.FromArgb("#00FF88");
-                canvas.StrokeSize = 3;
-                canvas.DrawCircle(0, 0, h * 0.75f);
+                canvas.StrokeSize = 3.5f;
+                canvas.DrawCircle(0, 0, h * 0.78f);
             }
 
             canvas.RestoreState();
