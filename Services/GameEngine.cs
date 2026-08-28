@@ -220,15 +220,54 @@ namespace FuelRushMaui.Services
             TargetSteeringAngle = NormalizedSteerInput * 90f; // Truck/Car simulator 90 degree steering rotation
         }
 
-        public void ActivateNitro()
+        public void SetSelectedVehicle(Vehicle vehicle)
+        {
+            if (vehicle != null)
+            {
+                CurrentVehicle = vehicle;
+                _storageService.SetSelectedVehicleId(vehicle.Id);
+                OnStateChanged?.Invoke();
+            }
+        }
+
+        private System.Threading.CancellationTokenSource? _nitroCts;
+
+        public async void ActivateNitro()
         {
             if (State != GameState.Playing) return;
-            if (Nitro >= 25f && !IsNitroActive)
+            if (Nitro < 25f || IsNitroActive) return;
+
+            // Deduct Nitro energy to prevent infinite boost hack
+            Nitro = Math.Max(0f, Nitro - 25f);
+            IsNitroActive = true;
+            NitroTimer = 5.0f; // Strict 5-second boost duration
+            _soundService.PlayNitroBoost();
+
+            _nitroCts?.Cancel();
+            _nitroCts = new System.Threading.CancellationTokenSource();
+            var token = _nitroCts.Token;
+
+            try
             {
-                IsNitroActive = true;
-                NitroTimer = 3.5f;
-                _soundService.PlayNitroBoost();
+                // Strict 5-second timer for nitro timeout
+                await System.Threading.Tasks.Task.Delay(5000, token);
+                if (!token.IsCancellationRequested)
+                {
+                    DeactivateNitro();
+                }
             }
+            catch (System.Threading.Tasks.TaskCanceledException)
+            {
+                // Timer cancelled on pause/reset
+            }
+        }
+
+        public void DeactivateNitro()
+        {
+            IsNitroActive = false;
+            NitroTimer = 0f;
+            CameraShakeX = 0f;
+            CameraShakeY = 0f;
         }
 
         public void ShiftGearNext()

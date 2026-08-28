@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FuelRushMaui.Models;
 using FuelRushMaui.Services;
+using FuelRushMaui.ViewModels;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 
@@ -13,6 +14,9 @@ namespace FuelRushMaui.Views
 
         private GarageService? _garageService;
         private StorageService? _storageService;
+        private GameEngine? _gameEngine;
+        private GarageViewModel? _viewModel;
+
         private List<Vehicle> _vehicles = new();
         private int _currentIndex = 0;
 
@@ -21,23 +25,24 @@ namespace FuelRushMaui.Views
             InitializeComponent();
         }
 
-        public void Initialize(GarageService garageService, StorageService storageService)
+        public void Initialize(GarageService garageService, StorageService storageService, GameEngine gameEngine)
         {
             _garageService = garageService;
             _storageService = storageService;
+            _gameEngine = gameEngine;
+            _viewModel = new GarageViewModel(_garageService, _storageService, _gameEngine);
+            BindingContext = _viewModel;
             LoadData();
         }
 
         public void LoadData()
         {
-            if (_garageService == null || _storageService == null) return;
+            if (_garageService == null || _storageService == null || _viewModel == null) return;
 
+            _viewModel.LoadVehicles();
             lblCoins.Text = _storageService.GetTotalCoins().ToString("N0");
-            _vehicles = _garageService.GetAllVehicles();
-
-            var selected = _garageService.GetSelectedVehicle();
-            _currentIndex = _vehicles.FindIndex(v => v.Id == selected.Id);
-            if (_currentIndex < 0) _currentIndex = 0;
+            _vehicles = _viewModel.Vehicles;
+            _currentIndex = _viewModel.CurrentIndex;
 
             UpdateUI();
         }
@@ -123,31 +128,32 @@ namespace FuelRushMaui.Views
 
         private void OnPrevClicked(object sender, EventArgs e)
         {
-            _currentIndex = (_currentIndex - 1 + _vehicles.Count) % _vehicles.Count;
-            UpdateUI();
+            if (_viewModel != null)
+            {
+                _viewModel.CurrentIndex--;
+                _currentIndex = _viewModel.CurrentIndex;
+                UpdateUI();
+            }
         }
 
         private void OnNextClicked(object sender, EventArgs e)
         {
-            _currentIndex = (_currentIndex + 1) % _vehicles.Count;
-            UpdateUI();
+            if (_viewModel != null)
+            {
+                _viewModel.CurrentIndex++;
+                _currentIndex = _viewModel.CurrentIndex;
+                UpdateUI();
+            }
         }
 
         private void OnActionClicked(object sender, EventArgs e)
         {
-            if (_garageService == null || _vehicles.Count == 0) return;
+            if (_viewModel == null || _vehicles.Count == 0) return;
 
-            var v = _vehicles[_currentIndex];
-            if (v.IsUnlocked)
+            _viewModel.SelectCurrentVehicle();
+            if (_gameEngine != null && _viewModel.SelectedVehicle != null)
             {
-                _garageService.SelectVehicle(v.Id);
-            }
-            else if (v.IsAchievementMet || (_storageService != null && _storageService.GetTotalCoins() >= v.Price))
-            {
-                if (_garageService.UnlockVehicle(v.Id))
-                {
-                    _garageService.SelectVehicle(v.Id);
-                }
+                _gameEngine.SetSelectedVehicle(_viewModel.SelectedVehicle);
             }
 
             LoadData();

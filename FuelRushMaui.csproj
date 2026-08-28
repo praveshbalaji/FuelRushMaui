@@ -64,9 +64,18 @@
 		<AndroidDexTool>d8</AndroidDexTool>
 	</PropertyGroup>
 
+	<!-- Cryptographic Keystore Signing for Release Build (Bypasses Play Protect Warning) -->
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)' == 'Release|net10.0-android'">
+		<AndroidKeyStore>true</AndroidKeyStore>
+		<AndroidSigningKeyStore>fuelrush.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>fuelrushkey</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass>Password123!</AndroidSigningKeyPass>
+		<AndroidSigningStorePass>Password123!</AndroidSigningStorePass>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- Mustang Custom Adaptive App Icon -->
-		<MauiIcon Include="Resources\Images\mustang_icon.png" Color="#0A0E17" BaseSize="128,128" Resize="True" />
+		<MauiIcon Include="Resources\Images\mustang_icon.png" Alias="appicon" Color="#0A0E17" BaseSize="128,128" ForegroundScale="0.65" Resize="True" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#0A0E17" BaseSize="160,160" />

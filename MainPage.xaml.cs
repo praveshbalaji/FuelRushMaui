@@ -336,7 +336,7 @@ namespace FuelRushMaui
 
         private void OnGarageClicked(object sender, EventArgs e)
         {
-            garageModal.Initialize(_garageService, _storageService);
+            garageModal.Initialize(_garageService, _storageService, _gameEngine);
             garageModal.IsVisible = true;
         }
 

@@ -13,18 +13,18 @@
 ---
 
 <div align="center" style="background: linear-gradient(135deg, #0a0e17 0%, #113979 100%); padding: 30px; border-radius: 16px; margin: 25px 0;">
-  <h2 style="color: #FFD700; font-family: 'Montserrat', sans-serif; margin-top: 0; font-size: 26px;">📲 Download Game APK (`fuelrush.apk`)</h2>
+  <h2 style="color: #FFD700; font-family: 'Montserrat', sans-serif; margin-top: 0; font-size: 26px;">📲 Download Game APK (`FuelRushMaui.apk`)</h2>
   <p style="color: #E2E8F0; font-size: 16px; max-width: 600px; margin: 0 auto 20px auto;">
-    Play <b>Fuel Rush</b> directly on your Android phone! Download the pre-built signed APK file below:
+    Play <b>Fuel Rush</b> directly on your Android phone! Click below to download the latest signed release APK:
   </p>
   
   <p>
-    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/fuelrush.apk" style="background-color: #22C55E; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; padding: 16px 36px; text-decoration: none; border-radius: 12px; display: inline-block; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);">
-      ⚡ DOWNLOAD FUELRUSH.APK (LATEST)
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.apk" style="background-color: #22C55E; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; padding: 16px 36px; text-decoration: none; border-radius: 12px; display: inline-block; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);">
+      ⚡ DOWNLOAD FUELRUSHMAUI.APK (LATEST SIGNED RELEASE)
     </a>
   </p>
-  <p style="color: #94A3B8; font-size: 14px; margin-top: 10px;">
-    Alternative: <a href="https://github.com/praveshbalaji/FuelRushMaui/releases" style="color: #38BDF8;">View All GitHub Releases &amp; Assets</a>
+  <p style="color: #94A3B8; font-size: 14px; margin-top: 12px;">
+    Alternative direct link: <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/fuelrush.apk" style="color: #38BDF8; font-weight: bold;">fuelrush.apk</a> | <a href="https://github.com/praveshbalaji/FuelRushMaui/releases" style="color: #38BDF8;">View All GitHub Releases &amp; Assets</a>
   </p>
 </div>
 

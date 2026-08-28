@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FuelRushMaui.Views.GarageModalView">
     <Border BackgroundColor="#0F1420"
-            Stroke="#00E5FF"
+            Stroke="#113979"
             StrokeThickness="2.5"
             Padding="20,16"
             HorizontalOptions="Center"
@@ -27,6 +27,7 @@
                            TextColor="#00E5FF" />
                     <Label Text="6 GENERATIONS OF MUSCLE"
                            FontSize="10"
+                           FontFamily="Montserrat"
                            TextColor="#94A3B8" />
                 </StackLayout>
                 
@@ -47,7 +48,7 @@
 
             <!-- Car Display Showcase Box -->
             <Border BackgroundColor="#161C2A"
-                    Stroke="#1E293B"
+                    Stroke="#113979"
                     StrokeThickness="1.5"
                     Padding="12"
                     HeightRequest="150">
@@ -56,9 +57,10 @@
                 </Border.StrokeShape>
                 
                 <Grid>
-                    <!-- High-Res Mustang 3/4 Angle Car Preview Image -->
+                    <!-- High-Res Mustang 3/4 Angle Car Preview Image (Transparent Background) -->
                     <Image x:Name="imgCarPreview"
                            Source="car_mustang_1965.png"
+                           BackgroundColor="Transparent"
                            Aspect="AspectFit"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
