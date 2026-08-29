@@ -14,7 +14,7 @@ namespace FuelRushMaui.Renderers
         private readonly GameEngine _engine;
         private float _animTimer = 0f;
 
-        private readonly Dictionary<string, IImage> _carImagesCache = new();
+        private readonly Dictionary<string, Microsoft.Maui.Graphics.IImage> _carImagesCache = new();
         private bool _isImageCacheLoading = false;
 
         public GameCanvasDrawable(GameEngine engine)
