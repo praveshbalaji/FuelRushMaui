@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using FuelRushMaui.Models;
 using FuelRushMaui.Services;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Graphics.Platform;
+using Microsoft.Maui.Storage;
 
 namespace FuelRushMaui.Renderers
 {
@@ -10,9 +14,41 @@ namespace FuelRushMaui.Renderers
         private readonly GameEngine _engine;
         private float _animTimer = 0f;
 
+        private readonly Dictionary<string, IImage> _carImagesCache = new();
+        private bool _isImageCacheLoading = false;
+
         public GameCanvasDrawable(GameEngine engine)
         {
             _engine = engine;
+            LoadCarImagesAsync();
+        }
+
+        private async void LoadCarImagesAsync()
+        {
+            if (_isImageCacheLoading) return;
+            _isImageCacheLoading = true;
+
+            string[] carIds = new[] { "mustang_1965", "mustang_1974", "mustang_1990", "mustang_2003", "mustang_2013", "mustang_2024" };
+            foreach (var id in carIds)
+            {
+                try
+                {
+                    string fileName = $"car_{id}_top.png";
+                    using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
+                    if (stream != null)
+                    {
+                        var img = PlatformImage.FromStream(stream);
+                        if (img != null)
+                        {
+                            _carImagesCache[id] = img;
+                        }
+                    }
+                }
+                catch
+                {
+                    // Fallback to vector model rendering if platform image loader stream is delayed
+                }
+            }
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -344,6 +380,7 @@ namespace FuelRushMaui.Renderers
             float w = _engine.PlayerWidth;
             float h = _engine.PlayerHeight;
             var vehicle = _engine.CurrentVehicle ?? new Vehicle();
+            string carId = vehicle.Id ?? "mustang_1965";
 
             canvas.SaveState();
             canvas.Translate(px, py);
@@ -353,7 +390,7 @@ namespace FuelRushMaui.Renderers
 
             // 1. Dynamic Neon Underglow LED Lighting (Uses vehicle accent/underglow color)
             Color underglowCol = Color.FromArgb(vehicle.UnderglowColor ?? "#00E5FF");
-            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.55f);
+            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.60f);
             canvas.FillEllipse(-w * 0.95f, -h * 0.65f, w * 1.90f, h * 1.30f);
 
             // 2. High-Beam Forward Headlight Cones
@@ -367,156 +404,31 @@ namespace FuelRushMaui.Renderers
             canvas.FillPath(lightBeam);
 
             // 3. Chassis Drop Shadow
-            canvas.FillColor = Color.FromRgba(0, 0, 0, 150);
+            canvas.FillColor = Color.FromRgba(0, 0, 0, 160);
             canvas.FillRoundedRectangle(-w / 2f + 4, -h / 2f + 8, w, h, 14);
 
-            // 4. Vehicle Colors & Distinct Body Shape by Model Id
-            Color priColor = Color.FromArgb(vehicle.PrimaryColor);
-            Color secColor = Color.FromArgb(vehicle.SecondaryColor);
-            Color accColor = Color.FromArgb(vehicle.AccentColor);
-
-            string carId = vehicle.Id ?? "mustang_1965";
-
-            // Chassis Main Body Base
-            canvas.FillColor = priColor;
-            
-            if (carId == "mustang_1990")
+            // 4. Draw Exact Top-Down Mustang Car Image Sprite from Garage Selection
+            if (_carImagesCache.TryGetValue(carId, out var carImg) && carImg != null)
             {
-                // 1990 Fox Body: Blocky 90s aerodynamic square GT silhouette
-                canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 6);
-            }
-            else if (carId == "mustang_1974")
-            {
-                // 1974 Coupe: Sleek 70s fastback contour
-                canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 18);
-            }
-            else if (carId == "mustang_2024")
-            {
-                // 2024 Dark Horse: Wide-body track spec
-                canvas.FillRoundedRectangle(-w / 2f - 2, -h / 2f, w + 4, h, 12);
+                // Render exact 3D top-down image of chosen Mustang (1965, 1974, 1990, 2003, 2013, or 2024)
+                canvas.DrawImage(carImg, -w / 2f - 4, -h / 2f - 4, w + 8, h + 8);
             }
             else
             {
-                // Classic Fastback & Shelby GT
+                // Vector fallback if image is loading
+                Color priColor = Color.FromArgb(vehicle.PrimaryColor ?? "#F4F4F0");
+                Color secColor = Color.FromArgb(vehicle.SecondaryColor ?? "#0F172A");
+                Color accColor = Color.FromArgb(vehicle.AccentColor ?? "#0055FF");
+
+                canvas.FillColor = priColor;
                 canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 14);
-            }
 
-            // Front Bumper & Splitter
-            canvas.FillColor = accColor;
-            canvas.FillRoundedRectangle(-w / 2f + 2, -h / 2f - 3, w - 4, 7, 3);
-
-            // Metallic Body Highlight Shading
-            canvas.FillColor = Color.FromRgba(255, 255, 255, 45);
-            canvas.FillRoundedRectangle(-w / 2f + 3, -h / 2f + 4, w - 6, h * 0.35f, 10);
-
-            // Model Specific Striping & Hood Accents
-            if (carId == "mustang_1965")
-            {
-                // Classic 1965 Dual Wimbledon Blue Stripes
                 canvas.FillColor = accColor;
-                canvas.FillRectangle(-7, -h / 2f, 5, h * 0.92f);
-                canvas.FillRectangle(2, -h / 2f, 5, h * 0.92f);
+                canvas.FillRoundedRectangle(-w / 2f + 2, -h / 2f - 3, w - 4, 7, 3);
 
-                // Chrome Front Grille & Round Mustang Badge
-                canvas.FillColor = Color.FromArgb("#E2E8F0");
-                canvas.FillCircle(0, -h / 2f + 6, 5);
-            }
-            else if (carId == "mustang_1974")
-            {
-                // Silver Metallic Center Stripe + Hood Scoop Bulge
-                canvas.FillColor = Color.FromArgb("#00E5FF");
-                canvas.FillRectangle(-3, -h / 2f, 6, h * 0.88f);
                 canvas.FillColor = secColor;
-                canvas.FillRoundedRectangle(-6, -h * 0.28f, 12, 16, 4);
+                canvas.FillRoundedRectangle(-w / 2f + 6, -h * 0.28f, w - 12, h * 0.52f, 8);
             }
-            else if (carId == "mustang_1990")
-            {
-                // Foxbody Black Rear Window Louvers & White Accent Strip
-                canvas.FillColor = Color.FromArgb("#000000");
-                canvas.FillRectangle(-w / 2f + 4, h * 0.05f, w - 8, 3);
-                canvas.FillRectangle(-w / 2f + 4, h * 0.12f, w - 8, 3);
-                canvas.FillRectangle(-w / 2f + 4, h * 0.19f, w - 8, 3);
-
-                canvas.FillColor = Color.FromArgb("#FFFFFF");
-                canvas.FillRectangle(-w / 2f, h * 0.32f, w, 4);
-            }
-            else if (carId == "mustang_2003")
-            {
-                // Mystichrome SVT Twin Supercharged Hood Vents
-                canvas.FillColor = Color.FromArgb("#10002B");
-                canvas.FillRoundedRectangle(-w * 0.32f, -h * 0.30f, 8, 14, 2);
-                canvas.FillRoundedRectangle(w * 0.32f - 8, -h * 0.30f, 8, 14, 2);
-            }
-            else if (carId == "mustang_2013")
-            {
-                // 2013 Shelby Gloss Black Dual Crimson Red Stripes
-                canvas.FillColor = Color.FromArgb("#FF0033");
-                canvas.FillRectangle(-8, -h / 2f, 6, h * 0.94f);
-                canvas.FillRectangle(2, -h / 2f, 6, h * 0.94f);
-            }
-            else if (carId == "mustang_2024")
-            {
-                // 2024 Dark Horse Cyan Air Intakes & Hood Extractor
-                canvas.FillColor = Color.FromArgb("#38BDF8");
-                canvas.FillRoundedRectangle(-10, -h * 0.34f, 20, 14, 4);
-                canvas.FillColor = Color.FromArgb("#0F172A");
-                canvas.FillRectangle(-6, -h * 0.30f, 12, 6);
-            }
-            else if (vehicle.HasRacingStripes)
-            {
-                canvas.FillColor = accColor;
-                canvas.FillRectangle(-7, -h / 2f, 5, h * 0.92f);
-                canvas.FillRectangle(2, -h / 2f, 5, h * 0.92f);
-            }
-
-            // Windshield & Side Windows
-            canvas.FillColor = secColor;
-            canvas.FillRoundedRectangle(-w / 2f + 6, -h * 0.28f, w - 12, h * 0.52f, 8);
-
-            canvas.FillColor = Color.FromRgba(56, 189, 248, 180);
-            canvas.FillRoundedRectangle(-w / 2f + 8, -h * 0.22f, w - 16, h * 0.20f, 4);
-
-            // Dynamic Steered Front Wheels
-            canvas.FillColor = Color.FromArgb("#0F172A");
-            
-            canvas.SaveState();
-            // Front Left Steered Wheel
-            canvas.Translate(-w / 2f - 4, -h * 0.32f);
-            canvas.Rotate(_engine.SteeringAngle * 0.5f);
-            canvas.FillRoundedRectangle(-4, -11, 7, 22, 3);
-            canvas.StrokeColor = accColor;
-            canvas.StrokeSize = 1.5f;
-            canvas.DrawRoundedRectangle(-4, -11, 7, 22, 3);
-            canvas.RestoreState();
-
-            canvas.SaveState();
-            // Front Right Steered Wheel
-            canvas.Translate(w / 2f + 4, -h * 0.32f);
-            canvas.Rotate(_engine.SteeringAngle * 0.5f);
-            canvas.FillRoundedRectangle(-3, -11, 7, 22, 3);
-            canvas.StrokeColor = accColor;
-            canvas.StrokeSize = 1.5f;
-            canvas.DrawRoundedRectangle(-3, -11, 7, 22, 3);
-            canvas.RestoreState();
-
-            // Heavy Rear Performance Wheels
-            canvas.FillRoundedRectangle(-w / 2f - 7, h * 0.18f, 7, 22, 3);
-            canvas.FillRoundedRectangle(w / 2f + 0, h * 0.18f, 7, 22, 3);
-
-            // High Performance GT Rear Spoiler Wing
-            if (vehicle.HasSpoiler || carId == "mustang_2024" || carId == "mustang_2013" || carId == "mustang_2003" || carId == "mustang_1990")
-            {
-                canvas.FillColor = Color.FromArgb("#0A0E17");
-                canvas.FillRoundedRectangle(-w / 2f - 6, h / 2f - 8, w + 12, 8, 3);
-                canvas.StrokeColor = accColor;
-                canvas.StrokeSize = 2;
-                canvas.DrawLine(-w / 2f - 6, h / 2f - 4, w / 2f + 6, h / 2f - 4);
-            }
-
-            // Tail Brake Lights Bar
-            canvas.FillColor = Color.FromArgb("#FF0033");
-            canvas.FillRectangle(-w / 2f + 4, h / 2f - 4, 12, 4);
-            canvas.FillRectangle(w / 2f - 16, h / 2f - 4, 12, 4);
 
             // Nitro Exhaust Flame Cones
             if (_engine.IsNitroActive)
