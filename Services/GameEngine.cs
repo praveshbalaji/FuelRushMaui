@@ -123,6 +123,7 @@ namespace FuelRushMaui.Services
         public void StartGame()
         {
             CurrentVehicle = _garageService.GetSelectedVehicle();
+            _soundService.StartTokyoDriftBgm();
 
             Fuel = 100f;
             Nitro = 0f; // Finite Nitro: starts at 0, must collect NitroTank pickups

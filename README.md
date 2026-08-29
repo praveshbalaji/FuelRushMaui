@@ -1,11 +1,11 @@
 <div align="center">
   <img src="Resources/Images/game_icon.png" width="140" alt="Fuel Rush Icon" />
-  <h1 style="font-family: 'Montserrat', sans-serif; color: #113979; font-size: 38px; margin-top: 10px;">Fuel Rush</h1>
-  <p style="font-family: 'Montserrat', sans-serif; color: #475569; font-size: 18px;"><b>AAA .NET MAUI 3D Racing Simulator &amp; Performance Showcase</b></p>
+  <h1 style="font-family: 'Montserrat', sans-serif; color: #00E5FF; font-size: 38px; margin-top: 10px;">Fuel Rush</h1>
+  <p style="font-family: 'Montserrat', sans-serif; color: #94A3B8; font-size: 18px;"><b>Mustang Simulator Apex — .NET MAUI High-Speed 2D Racing Simulator</b></p>
 
   <p>
     <a href="https://dotnet.microsoft.com/en-us/apps/maui"><img src="https://img.shields.io/badge/.NET%20MAUI-net10.0-512BD4?style=for-the-badge&logo=dotnet" alt=".NET MAUI" /></a>
-    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases"><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Windows%20%7C%20macOS-113979?style=for-the-badge" alt="Platforms" /></a>
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases"><img src="https://img.shields.io/badge/Platform-Windows%20%7C%20Android%20%7C%20iOS%20%7C%20macOS-113979?style=for-the-badge" alt="Platforms" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" /></a>
   </p>
 </div>
@@ -15,7 +15,7 @@
 <div align="center" style="background: linear-gradient(135deg, #0a0e17 0%, #113979 100%); padding: 30px; border-radius: 16px; margin: 25px 0;">
   <h2 style="color: #FFD700; font-family: 'Montserrat', sans-serif; margin-top: 0; font-size: 26px;">📲 Download Game APK (`FuelRushMaui.apk`)</h2>
   <p style="color: #E2E8F0; font-size: 16px; max-width: 600px; margin: 0 auto 20px auto;">
-    Play <b>Fuel Rush</b> directly on your Android phone! Click below to download the latest signed release APK:
+    Play <b>Fuel Rush</b> directly on your Android phone or PC! Click below to download the latest signed release APK:
   </p>
   
   <p>
@@ -30,31 +30,41 @@
 
 ### 📲 Quick Installation Instructions for Android Mobile
 
-1. **Download the APK:** Tap the **`DOWNLOAD FUELRUSH.APK`** button above directly on your phone.
+1. **Download the APK:** Tap the **`DOWNLOAD FUELRUSHMAUI.APK`** button above directly on your phone.
 2. **Allow Installation from Unknown Sources:**
    - If prompted by your browser (Chrome/Files), tap **Settings** and toggle **Allow from this source** to **ON**.
    - Or go to **Settings > Apps > Special App Access > Install Unknown Apps** on your phone.
 3. **Bypass Play Protect Warning (Self-Signed APK):**
-   - Because this app is independently published, Google Play Protect may show a warning.
    - Tap **More details** and then select **Install anyway**.
 4. **Already Have Previous Build Installed?**
-   - Uninstall any older version of `FuelRushMaui` or `Fuel Rush` from your phone first to avoid update signature conflicts.
+   - Uninstall older versions of `FuelRushMaui` from your phone first to prevent update signature conflicts.
 
 ---
 
-<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">🌟 Project Overview &amp; Architecture</h2>
+## 🌟 Features & Technical Highlights
 
-**Fuel Rush** is an arcade 3D racing simulator designed and engineered from scratch in **.NET MAUI (C# 10)**. It serves as an architectural showcase demonstrating real-time 60 FPS canvas graphics, continuous vector physics, interactive touch gesture steering controls, multi-tier state management, and multiplatform delivery.
+- 🏎️ **Dynamic Player Car Synchronization**:
+  - The in-game player car directly reflects whichever Mustang model is selected in the Garage.
+  - Custom top-down vector models for all **6 Mustang Generations** (1965 Fastback, 1974 Coupe, 1990 Fox Body GT, 2003 SVT Cobra, 2013 Shelby GT500, and 2024 Dark Horse) complete with model-specific shapes, colors, stripes, spoilers, hood scoops, and neon underglow.
 
-### ⚡ Architectural Highlights
-- <b style="color: #113979;">Custom 60 FPS Canvas Engine</b>: Built entirely on `Microsoft.Maui.Graphics` with real-time vector highway rendering, dynamic particle systems (nitro exhaust flames, road sparks, smoke), off-road terrain parallax, and camera shake physics.
-- <b style="color: #113979;">Tactile Steering Wheel Controls</b>: Real-time 3D Ford Mustang steering wheel featuring 90° center-axis rotation, normalized touch-drag gesture mapping (`-1.0` to `+1.0`), and cubic spring return-to-center physics.
-- <b style="color: #113979;">Mustang Garage &amp; Scenario Achievement System</b>: Features 6 generations of Ford Mustang vehicles (1965 Fastback to 2024 Dark Horse) unlocked dynamically via fixed scenario completion metrics (level gas stations, top speed thresholds, coin milestones).
-- <b style="color: #113979;">AI-Accelerated Engineering</b>: Engineered in **under 1 week** utilizing generative AI pair programming for real-time asset processing, mathematical gesture curve optimization, and cross-platform compilation.
+- 🎵 **Tokyo Drift Audio Engine**:
+  - High-energy **Tokyo Drift** background soundtrack (`tokyo_drift_bgm.wav`) with driving synth bass and drift rhythm.
+  - Native Windows multimedia audio integration (`winmm.dll`) and PCM WAV synthesis for real-time sound effects (chimes, nitro boost, crash, engine rev) on Windows and Android.
+
+- ⚡ **Clean Cyber Loader Page**:
+  - Custom high-speed Mustang GT loader car graphic with clean alpha-transparent background (`turbo_car_loader.png`).
+  - Animated loading progress track with neon green feedback.
+
+- 🎮 **Real-Time Simulator Controls**:
+  - Analog 90° center-axis Ford Mustang steering wheel with touch-drag gesture mapping and cubic spring return-to-center physics.
+  - Ribbed brake and accelerator pedals with dynamic RPM and tachometer physics.
+
+- 🏆 **Mustang Garage & Achievement System**:
+  - Earn coins, reach target distances, and unlock 6 generations of iconic Ford Mustangs through scenario achievement milestones.
 
 ---
 
-<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">🏎️ Mustang Garage Lineup</h2>
+## 🏎️ Mustang Garage Lineup
 
 <div align="center">
   <img src="Resources/Images/car_mustang_1965.png" width="48%" alt="1965 Mustang" />
@@ -68,15 +78,34 @@
 | **3** | **Gen 3 (1990)** | **1990 Fox Body GT** | 🏆 **Scenario 3: Coin Collector** (Collect 100 Coins) |
 | **4** | **Gen 4 (2003)** | **2003 SVT Cobra Mystichrome** | 🏆 **Scenario 4: Velocity Master** (Reach 180 KM/H Speed) |
 | **5** | **Gen 5 (2013)** | **2013 Shelby GT500** | 🏆 **Scenario 5: Endurance Legend** (Reach Level 4) |
-| **6** | **Gen 6 (2024)** | **2024 Mustang Dark Horse** | 🏆 **Scenario 6: Game Completion Master** (100% Master) |
+| **6** | **Gen 6 (2024)** | **2024 Mustang Dark Horse** | 🏆 **Scenario 6: Game Completion Master** (100% Completion) |
 
 ---
 
-<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">💻 Local Build &amp; Compilation</h2>
+## 🏗️ Project Architecture
+
+```
+FuelRushMaui/
+├── Models/              # Vehicle, Obstacle, Collectible, HighScore models
+├── Renderers/           # GameCanvasDrawable (60 FPS canvas graphics & 6-car renderer)
+├── Services/            # GameEngine, GarageService, SoundService (WinMM & Tokyo Drift BGM), StorageService
+├── ViewModels/          # GarageViewModel & binding context
+├── Views/               # LoadingPage, GarageModalView, HighScoresModalView, MainPage
+├── Resources/
+│   ├── Images/          # Mustang car images, clean loader car, steering wheel
+│   └── Raw/             # Tokyo Drift background music (tokyo_drift_bgm.wav)
+└── FuelRushMaui.csproj  # .NET 10.0 MAUI configuration
+```
+
+---
+
+## 💻 Local Build & Compilation
 
 ### Prerequisites
-- [.NET 10.0 Preview SDK](https://dotnet.microsoft.com/download)
-- Visual Studio 2022 / VS Code with .NET MAUI Workload
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
+- Visual Studio 2022 or VS Code with .NET MAUI Workload
+
+### Commands
 
 ```bash
 # Clone the repository
@@ -85,15 +114,15 @@ git clone https://github.com/praveshbalaji/FuelRushMaui.git
 # Navigate to project folder
 cd FuelRushMaui
 
+# Build for Windows
+dotnet build -f net10.0-windows10.0.19041.0
+
 # Build Android APK directly
 dotnet publish -f net10.0-android -c Release -p:AndroidKeyStore=false
-
-# Output APK location:
-# bin/Release/net10.0-android/publish/fuelrush.apk
 ```
 
 ---
 
-<h2 style="font-family: 'Montserrat', sans-serif; color: #113979;">🤝 License &amp; Contact</h2>
+## 🤝 License & Contact
 
 Designed and developed with passion by **Balaji ([@praveshbalaji](https://github.com/praveshbalaji))**. Distributed under the **MIT License**.
