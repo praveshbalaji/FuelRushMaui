@@ -122,10 +122,13 @@ namespace FuelRushMaui.Services
 
         public void StartGame()
         {
+            DeactivateNitro();
+
             CurrentVehicle = _garageService.GetSelectedVehicle();
             _soundService.StartTokyoDriftBgm();
 
             Fuel = 100f;
+            MaxFuel = 100f;
             Nitro = 0f; // Finite Nitro: starts at 0, must collect NitroTank pickups
             Score = 0;
             DistanceKm = 0f;
@@ -134,15 +137,26 @@ namespace FuelRushMaui.Services
             MultiplierTimer = 0f;
             GameOverReason = GameOverType.None;
 
+            CurrentSpeedKmH = 0f;
+            CurrentRpm = 1000f;
+            CurrentGear = 1;
+            CameraShakeX = 0f;
+            CameraShakeY = 0f;
+            RoadScrollY = 0f;
+
             IsNitroActive = false;
             IsShieldActive = false;
+            ShieldTimer = 0f;
+            NitroTimer = 0f;
+
             IsGasPressed = true; // Auto gas start
             IsBrakePressed = false;
             SteeringAngle = 0f;
+            TargetSteeringAngle = 0f;
             NormalizedSteerInput = 0f;
 
-            PlayerX = CanvasWidth / 2f;
-            PlayerY = CanvasHeight * 0.76f;
+            PlayerX = CanvasWidth > 0 ? CanvasWidth / 2f : 540f;
+            PlayerY = CanvasHeight > 0 ? CanvasHeight * 0.76f : 410f;
 
             Collectibles.Clear();
             Obstacles.Clear();
@@ -154,6 +168,11 @@ namespace FuelRushMaui.Services
 
             State = GameState.Playing;
             OnStateChanged?.Invoke();
+        }
+
+        public void RestartGame()
+        {
+            StartGame();
         }
 
         public void PauseGame()

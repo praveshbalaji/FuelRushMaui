@@ -167,6 +167,10 @@ namespace FuelRushMaui
                         menuOverlay.IsVisible = false;
                         pauseOverlay.IsVisible = true;
                         gameOverOverlay.IsVisible = false;
+                        if (lblPauseVehicleName != null && _gameEngine.CurrentVehicle != null)
+                        {
+                            lblPauseVehicleName.Text = _gameEngine.CurrentVehicle.Name;
+                        }
                         break;
 
                     case GameState.GameOver:
@@ -323,9 +327,18 @@ namespace FuelRushMaui
             _gameEngine.PauseGame();
         }
 
+        private void OnRestartClicked(object sender, EventArgs e)
+        {
+            pauseOverlay.IsVisible = false;
+            gameOverOverlay.IsVisible = false;
+            _gameEngine.RestartGame();
+        }
+
         private void OnReplayClicked(object sender, EventArgs e)
         {
-            _gameEngine.StartGame();
+            pauseOverlay.IsVisible = false;
+            gameOverOverlay.IsVisible = false;
+            _gameEngine.RestartGame();
         }
 
         private void OnQuitToMenuClicked(object sender, EventArgs e)

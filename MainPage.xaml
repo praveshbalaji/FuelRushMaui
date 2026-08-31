@@ -61,21 +61,24 @@
                         <Label Text="KM/H" FontFamily="MontserratBold" FontSize="16" FontAttributes="Bold,Italic" TextColor="#E2E8F0" VerticalOptions="End" Margin="4,0,0,8" />
                     </StackLayout>
 
-                    <!-- Pause Button -->
-                    <Button Grid.Column="1"
-                            Text="⏸"
-                            FontSize="18"
-                            Clicked="OnPauseClicked"
-                            BackgroundColor="#CC0F172A"
-                            TextColor="#FFFFFF"
-                            CornerRadius="12"
-                            WidthRequest="42"
-                            HeightRequest="42"
-                            Margin="14,0,0,0">
-                        <Button.Shadow>
-                            <Shadow Brush="#000000" Offset="0,3" Radius="8" Opacity="0.6" />
-                        </Button.Shadow>
-                    </Button>
+                    <!-- Modern Glassmorphic Pause Button -->
+                    <Border Grid.Column="1" BackgroundColor="#EE0F172A" Stroke="#00E5FF" StrokeThickness="2" Margin="12,0,0,0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16"/>
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow Brush="#000000" Offset="0,4" Radius="10" Opacity="0.7"/>
+                        </Border.Shadow>
+                        <Button Text="⏸ PAUSE"
+                                Clicked="OnPauseClicked"
+                                BackgroundColor="Transparent"
+                                TextColor="#00E5FF"
+                                FontFamily="MontserratBold"
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                Padding="14,0"
+                                HeightRequest="44" />
+                    </Border>
                 </Grid>
 
                 <!-- Educational Coasting Indicator Badge -->
@@ -361,15 +364,34 @@
         </Grid>
 
         <!-- 4. PAUSE OVERLAY -->
-        <Grid x:Name="pauseOverlay" IsVisible="False" BackgroundColor="#D9070A10" Padding="30">
-            <Border BackgroundColor="#0F172A" Stroke="#00E5FF" StrokeThickness="2" Padding="28" WidthRequest="340" HorizontalOptions="Center" VerticalOptions="Center">
+        <Grid x:Name="pauseOverlay" IsVisible="False" BackgroundColor="#E6070A10" Padding="20">
+            <Border BackgroundColor="#0F172A" Stroke="#00E5FF" StrokeThickness="2.5" Padding="28" WidthRequest="360" HorizontalOptions="Center" VerticalOptions="Center">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="24"/>
+                    <RoundRectangle CornerRadius="26"/>
                 </Border.StrokeShape>
-                <StackLayout Spacing="18">
-                    <Label Text="SIMULATOR PAUSED" FontSize="24" FontAttributes="Bold" TextColor="#00E5FF" HorizontalOptions="Center" />
-                    <Button Text="RESUME SIMULATOR" Clicked="OnPauseClicked" BackgroundColor="#00E5FF" TextColor="#070A10" FontAttributes="Bold" FontSize="16" CornerRadius="14" HeightRequest="50" />
-                    <Button Text="MAIN MENU" Clicked="OnQuitToMenuClicked" BackgroundColor="#334155" TextColor="#FFFFFF" FontSize="14" CornerRadius="14" HeightRequest="44" />
+                <Border.Shadow>
+                    <Shadow Brush="#00E5FF" Offset="0,0" Radius="20" Opacity="0.4" />
+                </Border.Shadow>
+                <StackLayout Spacing="16">
+                    <Label Text="⏸ GAME PAUSED" FontFamily="MontserratBold" FontSize="24" FontAttributes="Bold" TextColor="#00E5FF" HorizontalOptions="Center" />
+                    
+                    <Border BackgroundColor="#1E293B" Padding="14" StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14"/>
+                        </Border.StrokeShape>
+                        <StackLayout Spacing="4" HorizontalOptions="Center">
+                            <Label Text="SELECTED VEHICLE" FontSize="11" TextColor="#94A3B8" HorizontalOptions="Center" />
+                            <Label x:Name="lblPauseVehicleName" Text="Mustang GT" FontFamily="MontserratBold" FontSize="15" FontAttributes="Bold" TextColor="#FFD700" HorizontalOptions="Center" />
+                        </StackLayout>
+                    </Border>
+
+                    <Button Text="▶ RESUME RACE" Clicked="OnPauseClicked" BackgroundColor="#00E5FF" TextColor="#070A10" FontFamily="MontserratBold" FontAttributes="Bold" FontSize="16" CornerRadius="16" HeightRequest="50">
+                        <Button.Shadow>
+                            <Shadow Brush="#00E5FF" Offset="0,0" Radius="10" Opacity="0.5" />
+                        </Button.Shadow>
+                    </Button>
+                    <Button Text="🔄 RESTART RACE" Clicked="OnRestartClicked" BackgroundColor="#1E293B" TextColor="#FFD700" FontFamily="MontserratBold" FontAttributes="Bold" FontSize="15" CornerRadius="16" HeightRequest="48" />
+                    <Button Text="🏠 MAIN MENU" Clicked="OnQuitToMenuClicked" BackgroundColor="#334155" TextColor="#FFFFFF" FontFamily="MontserratBold" FontSize="14" CornerRadius="16" HeightRequest="46" />
                 </StackLayout>
             </Border>
         </Grid>

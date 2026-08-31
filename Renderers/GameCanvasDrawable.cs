@@ -425,30 +425,48 @@ namespace FuelRushMaui.Renderers
             // Rotate car body slightly when steering
             canvas.Rotate(_engine.SteeringAngle * 0.35f);
 
-            // 1. Dynamic Neon Underglow LED Lighting (Uses vehicle accent/underglow color)
+            // 1. Sleek Chassis Neon Underglow LED Lighting (Subtle, high-tech glow under chassis)
             Color underglowCol = Color.FromArgb(vehicle.UnderglowColor ?? "#00E5FF");
-            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.60f);
-            canvas.FillEllipse(-w * 0.95f, -h * 0.65f, w * 1.90f, h * 1.30f);
+            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.25f);
+            canvas.FillRoundedRectangle(-w * 0.70f, -h * 0.55f, w * 1.40f, h * 1.10f, 20);
+
+            canvas.FillColor = Color.FromRgba(underglowCol.Red, underglowCol.Green, underglowCol.Blue, 0.45f);
+            canvas.FillRoundedRectangle(-w * 0.55f, -h * 0.45f, w * 1.10f, h * 0.90f, 14);
 
             // 2. High-Beam Forward Headlight Cones
-            canvas.FillColor = Color.FromRgba(255, 255, 220, 55);
+            canvas.FillColor = Color.FromRgba(255, 255, 220, 45);
             PathF lightBeam = new PathF();
-            lightBeam.MoveTo(-w * 0.38f, -h * 0.4f);
-            lightBeam.LineTo(-w * 1.70f, -h * 3.5f);
-            lightBeam.LineTo(w * 1.70f, -h * 3.5f);
-            lightBeam.LineTo(w * 0.38f, -h * 0.4f);
+            lightBeam.MoveTo(-w * 0.32f, -h * 0.48f);
+            lightBeam.LineTo(-w * 1.60f, -h * 3.5f);
+            lightBeam.LineTo(w * 1.60f, -h * 3.5f);
+            lightBeam.LineTo(w * 0.32f, -h * 0.48f);
             lightBeam.Close();
             canvas.FillPath(lightBeam);
 
             // 3. Chassis Drop Shadow
-            canvas.FillColor = Color.FromRgba(0, 0, 0, 160);
-            canvas.FillRoundedRectangle(-w / 2f + 4, -h / 2f + 8, w, h, 14);
+            canvas.FillColor = Color.FromRgba(0, 0, 0, 150);
+            canvas.FillRoundedRectangle(-w / 2f + 3, -h / 2f + 6, w, h, 14);
 
             // 4. Draw Exact Top-Down Mustang Car Image Sprite from Garage Selection
             if (_carImagesCache.TryGetValue(carId, out var carImg) && carImg != null)
             {
-                // Render exact 3D top-down image of chosen Mustang (1965, 1974, 1990, 2003, 2013, or 2024)
-                canvas.DrawImage(carImg, -w / 2f - 4, -h / 2f - 4, w + 8, h + 8);
+                // Preserve exact sprite aspect ratio to prevent squishing
+                float drawW = w + 16f;
+                float drawH = h + 20f;
+                if (carImg.Width > 0 && carImg.Height > 0)
+                {
+                    float aspect = carImg.Width / carImg.Height;
+                    float targetAspect = drawW / drawH;
+                    if (aspect > targetAspect)
+                    {
+                        drawW = drawH * aspect;
+                    }
+                    else
+                    {
+                        drawH = drawW / aspect;
+                    }
+                }
+                canvas.DrawImage(carImg, -drawW / 2f, -drawH / 2f, drawW, drawH);
             }
             else
             {
