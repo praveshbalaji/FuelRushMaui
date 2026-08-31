@@ -31,24 +31,61 @@ namespace FuelRushMaui.Renderers
             string[] carIds = new[] { "mustang_1965", "mustang_1974", "mustang_1990", "mustang_2003", "mustang_2013", "mustang_2024" };
             foreach (var id in carIds)
             {
+                var img = await LoadSingleCarImageAsync(id);
+                if (img != null)
+                {
+                    _carImagesCache[id] = img;
+                }
+            }
+        }
+
+        private async System.Threading.Tasks.Task<Microsoft.Maui.Graphics.IImage?> LoadSingleCarImageAsync(string id)
+        {
+            string[] candidateNames = new[]
+            {
+                $"car_{id}_top.png",
+                $"car_{id}_top.scale-100.png",
+                $"car_{id}.png",
+                $"car_{id}.scale-100.png"
+            };
+
+            foreach (var name in candidateNames)
+            {
                 try
                 {
-                    string fileName = $"car_{id}_top.png";
-                    using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
+                    using var stream = await FileSystem.OpenAppPackageFileAsync(name);
                     if (stream != null)
                     {
                         var img = PlatformImage.FromStream(stream);
-                        if (img != null)
-                        {
-                            _carImagesCache[id] = img;
-                        }
+                        if (img != null) return img;
                     }
                 }
                 catch
                 {
-                    // Fallback to vector model rendering if platform image loader stream is delayed
+                    // Try next candidate filename
                 }
             }
+
+            // Direct local file system check fallback for desktop output paths
+            foreach (var name in candidateNames)
+            {
+                try
+                {
+                    string localPath = Path.Combine(AppContext.BaseDirectory, name);
+                    if (File.Exists(localPath))
+                    {
+                        using var stream = File.OpenRead(localPath);
+                        var img = PlatformImage.FromStream(stream);
+                        if (img != null) return img;
+                    }
+                }
+                catch
+                {
+                    // Ignore and try next
+                }
+            }
+
+            return null;
         }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -415,7 +452,20 @@ namespace FuelRushMaui.Renderers
             }
             else
             {
-                // Vector fallback if image is loading
+                // Trigger on-demand background image load if missing from cache
+                if (!_carImagesCache.ContainsKey(carId))
+                {
+                    _ = System.Threading.Tasks.Task.Run(async () =>
+                    {
+                        var img = await LoadSingleCarImageAsync(carId);
+                        if (img != null)
+                        {
+                            _carImagesCache[carId] = img;
+                        }
+                    });
+                }
+
+                // Vector fallback while image is loading
                 Color priColor = Color.FromArgb(vehicle.PrimaryColor ?? "#F4F4F0");
                 Color secColor = Color.FromArgb(vehicle.SecondaryColor ?? "#0F172A");
                 Color accColor = Color.FromArgb(vehicle.AccentColor ?? "#0055FF");
