@@ -73,6 +73,14 @@
 		<AndroidSigningStorePass>Password123!</AndroidSigningStorePass>
 	</PropertyGroup>
 
+	<!-- iOS Configuration for Simulator & Device Build -->
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<MtouchLink>SdkOnly</MtouchLink>
+		<MtouchFloat32>true</MtouchFloat32>
+		<MtouchUseLlvm>true</MtouchUseLlvm>
+		<RuntimeIdentifiers>iossimulator-x64;iossimulator-arm64;ios-arm64</RuntimeIdentifiers>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- Mustang Custom Adaptive App Icon -->
 		<MauiIcon Include="Resources\Images\mustang_icon.png" Alias="appicon" Color="#0A0E17" BaseSize="128,128" ForegroundScale="0.65" Resize="True" />

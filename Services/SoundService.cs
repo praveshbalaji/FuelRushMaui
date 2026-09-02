@@ -49,6 +49,17 @@ namespace FuelRushMaui.Services
                     mciSendString($"open \"{localPath}\" type waveaudio alias tokyodrift", null, 0, IntPtr.Zero);
                     mciSendString("play tokyodrift repeat", null, 0, IntPtr.Zero);
                     _isBgmPlaying = true;
+#elif IOS || MACCATALYST
+                    var url = Foundation.NSUrl.FromFilename(localPath);
+                    _iosBgmPlayer?.Stop();
+                    _iosBgmPlayer?.Dispose();
+                    _iosBgmPlayer = AVFoundation.AVAudioPlayer.FromUrl(url);
+                    if (_iosBgmPlayer != null)
+                    {
+                        _iosBgmPlayer.NumberOfLoops = -1;
+                        _iosBgmPlayer.Play();
+                        _isBgmPlaying = true;
+                    }
 #endif
                 }
                 catch
@@ -58,6 +69,8 @@ namespace FuelRushMaui.Services
             });
         }
 
+        private AVFoundation.AVAudioPlayer? _iosBgmPlayer;
+
         public void StopBgm()
         {
             _isBgmPlaying = false;
@@ -66,6 +79,14 @@ namespace FuelRushMaui.Services
             {
                 mciSendString("stop tokyodrift", null, 0, IntPtr.Zero);
                 mciSendString("close tokyodrift", null, 0, IntPtr.Zero);
+            }
+            catch { }
+#elif IOS || MACCATALYST
+            try
+            {
+                _iosBgmPlayer?.Stop();
+                _iosBgmPlayer?.Dispose();
+                _iosBgmPlayer = null;
             }
             catch { }
 #endif
@@ -164,6 +185,18 @@ namespace FuelRushMaui.Services
                         }
                         catch { }
                     });
+#elif IOS || MACCATALYST
+                    byte[] wavHeaderAndData = CreateWavByteArray(samples, sampleRate);
+                    var nsData = Foundation.NSData.FromArray(wavHeaderAndData);
+                    var player = AVFoundation.AVAudioPlayer.FromData(nsData);
+                    if (player != null)
+                    {
+                        player.Play();
+                        Task.Delay(durationMs + 120).ContinueWith(_ =>
+                        {
+                            try { player.Stop(); player.Dispose(); } catch { }
+                        });
+                    }
 #endif
                 }
                 catch

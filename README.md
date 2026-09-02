@@ -136,18 +136,24 @@ FuelRushMaui/
 - [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
 - Visual Studio 2022 (v17.12+) or VS Code with .NET MAUI Workload (`dotnet workload install maui`)
 
-### Build Commands
+### Multi-Platform Build Commands
 
 ```bash
 # Clone the repository
 git clone https://github.com/praveshbalaji/FuelRushMaui.git
 cd FuelRushMaui
 
-# Build & Run for Windows Desktop
+# 1. Build & Run for Windows Desktop
 dotnet build -f net10.0-windows10.0.19041.0
 
-# Publish Production Signed Android APK
+# 2. Publish Production Signed Android APK
 dotnet publish FuelRushMaui.csproj -f net10.0-android -c Release -p:AndroidPackageFormat=apk
+
+# 3. Build & Run on iOS Simulator (macOS)
+dotnet build FuelRushMaui.csproj -f net10.0-ios -c Release -p:RuntimeIdentifier=iossimulator-x64
+
+# 4. Build & Publish iOS App Bundle / IPA (Apple Device)
+dotnet publish FuelRushMaui.csproj -f net10.0-ios -c Release -p:RuntimeIdentifier=ios-arm64
 ```
 
 ---
