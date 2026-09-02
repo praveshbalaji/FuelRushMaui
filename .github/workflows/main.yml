@@ -89,7 +89,7 @@ jobs:
             release_assets/fuelrush.apk
 
   build-ios:
-    name: Build iOS Bundle (.app / .zip)
+    name: Build iOS Bundle (.app / .ipa)
     runs-on: macos-14
 
     steps:
@@ -106,23 +106,39 @@ jobs:
         run: |
           dotnet workload install maui-ios
 
+      - name: Build & Package iOS IPA (for Sideloadly on Windows/Mac)
+        run: |
+          dotnet publish FuelRushMaui.csproj \
+            -f net10.0-ios \
+            -c Release \
+            -p:RuntimeIdentifier=ios-arm64 \
+            -p:ArchiveOnBuild=true \
+            -p:EnableCodeSigning=false \
+            -o output/ios_device
+
+          mkdir -p release_assets
+          mkdir -p Payload
+          APP_PATH=$(find output/ios_device bin/Release -name "*.app" -type d 2>/dev/null | head -n 1)
+          echo "Found iOS App bundle at: $APP_PATH"
+          cp -r "$APP_PATH" Payload/
+          zip -r release_assets/FuelRushMaui.ipa Payload
+
       - name: Build iOS Simulator App Package
         run: |
           dotnet build FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
             -p:RuntimeIdentifier=iossimulator-x64 \
-            -o output/ios
+            -o output/ios_sim
 
-      - name: Zip iOS Simulator App
-        run: |
-          mkdir -p release_assets
-          cd output/ios
+          cd output/ios_sim
           zip -r ../../release_assets/FuelRushMaui_iOS_Simulator.zip .
 
-      - name: Attach iOS Build to Release
+      - name: Attach iOS Builds to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "latest"
           files: |
+            release_assets/FuelRushMaui.ipa
             release_assets/FuelRushMaui_iOS_Simulator.zip
+

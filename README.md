@@ -14,18 +14,21 @@
 ---
 
 <div align="center" style="background: linear-gradient(135deg, #0a0e17 0%, #113979 100%); padding: 30px; border-radius: 16px; margin: 25px 0;">
-  <h2 style="color: #FFD700; font-family: 'Montserrat', sans-serif; margin-top: 0; font-size: 26px;">📲 Download Production APK (`FuelRushMaui.apk`)</h2>
+  <h2 style="color: #FFD700; font-family: 'Montserrat', sans-serif; margin-top: 0; font-size: 26px;">📲 Download Production Builds (Android APK &amp; iOS IPA)</h2>
   <p style="color: #E2E8F0; font-size: 16px; max-width: 650px; margin: 0 auto 20px auto;">
-    Play <b>Fuel Rush</b> directly on your Android phone or Windows PC! Download the latest signed release built automatically via GitHub Actions CI/CD:
+    Play <b>Fuel Rush</b> on Android or iOS! Automated multi-platform release binaries built via GitHub Actions Cloud CI/CD:
   </p>
   
-  <p>
-    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.apk" style="background-color: #22C55E; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 20px; padding: 16px 36px; text-decoration: none; border-radius: 12px; display: inline-block; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);">
-      ⚡ DOWNLOAD FUELRUSHMAUI.APK (SIGNED RELEASE)
+  <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.apk" style="background-color: #22C55E; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 18px; padding: 14px 28px; text-decoration: none; border-radius: 12px; display: inline-block; box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);">
+      🤖 Android APK (`FuelRushMaui.apk`)
     </a>
-  </p>
-  <p style="color: #94A3B8; font-size: 14px; margin-top: 12px;">
-    Alternative direct link: <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/fuelrush.apk" style="color: #38BDF8; font-weight: bold;">fuelrush.apk</a> | <a href="https://github.com/praveshbalaji/FuelRushMaui/releases" style="color: #38BDF8;">View All GitHub Releases &amp; Assets</a>
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.ipa" style="background-color: #007AFF; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 18px; padding: 14px 28px; text-decoration: none; border-radius: 12px; display: inline-block; box-shadow: 0 4px 14px rgba(0, 122, 255, 0.4);">
+      🍏 iOS IPA (`FuelRushMaui.ipa`)
+    </a>
+  </div>
+  <p style="color: #94A3B8; font-size: 14px; margin-top: 16px;">
+    <b>No Mac needed!</b> Install the iOS <code>.ipa</code> on your iPhone/iPad using <b>Sideloadly</b> on Windows. | <a href="https://github.com/praveshbalaji/FuelRushMaui/releases" style="color: #38BDF8;">View All Releases</a>
   </p>
 </div>
 
@@ -155,6 +158,17 @@ dotnet build FuelRushMaui.csproj -f net10.0-ios -c Release -p:RuntimeIdentifier=
 # 4. Build & Publish iOS App Bundle / IPA (Apple Device)
 dotnet publish FuelRushMaui.csproj -f net10.0-ios -c Release -p:RuntimeIdentifier=ios-arm64
 ```
+
+### 🍏 Installing on iOS without a Mac (Sideloadly Workflow)
+1. **GitHub Cloud Build**: GitHub Actions uses cloud macOS runners (`macos-14`) to compile `.NET 10 MAUI` into an unsigned `FuelRushMaui.ipa` package.
+2. **Download Binary**: Download `FuelRushMaui.ipa` from the [Latest GitHub Release](https://github.com/praveshbalaji/FuelRushMaui/releases/latest).
+3. **Sideload via Windows**:
+   - Open **Sideloadly** on Windows.
+   - Connect your iPhone or iPad via USB cable (and trust the PC).
+   - Drag & drop `FuelRushMaui.ipa` into Sideloadly.
+   - Enter your Apple ID (free Apple Developer account).
+   - Click **Start**. Sideloadly automatically signs the IPA with your Apple ID certificate and installs **Fuel Rush** onto your iOS device!
+4. **Trust Certificate on iPhone**: Go to `Settings -> General -> VPN & Device Management` on your iPhone, select your Apple ID, and tap **Trust "Apple Development..."**.
 
 ---
 
