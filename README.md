@@ -159,16 +159,27 @@ dotnet build FuelRushMaui.csproj -f net10.0-ios -c Release -p:RuntimeIdentifier=
 dotnet publish FuelRushMaui.csproj -f net10.0-ios -c Release -p:RuntimeIdentifier=ios-arm64
 ```
 
-### 🍏 Installing on iOS without a Mac (Sideloadly Workflow)
-1. **GitHub Cloud Build**: GitHub Actions uses cloud macOS runners (`macos-14`) to compile `.NET 10 MAUI` into an unsigned `FuelRushMaui.ipa` package.
-2. **Download Binary**: Download `FuelRushMaui.ipa` from the [Latest GitHub Release](https://github.com/praveshbalaji/FuelRushMaui/releases/latest).
-3. **Sideload via Windows**:
-   - Open **Sideloadly** on Windows.
-   - Connect your iPhone or iPad via USB cable (and trust the PC).
-   - Drag & drop `FuelRushMaui.ipa` into Sideloadly.
-   - Enter your Apple ID (free Apple Developer account).
-   - Click **Start**. Sideloadly automatically signs the IPA with your Apple ID certificate and installs **Fuel Rush** onto your iOS device!
-4. **Trust Certificate on iPhone**: Go to `Settings -> General -> VPN & Device Management` on your iPhone, select your Apple ID, and tap **Trust "Apple Development..."**.
+### 🍏 Installing on iOS without a Mac (Cableless & Wireless Workflows)
+
+#### Method 1: On-Device Sideloading directly on iPhone (No PC/Cable Required!)
+1. Open **Safari** on your iPhone and go to the [Latest GitHub Release](https://github.com/praveshbalaji/FuelRushMaui/releases/latest).
+2. Download `FuelRushMaui.ipa` directly to your Files app.
+3. Use a free on-device sideloading tool such as **Scarlet** ([usescarlet.com](https://usescarlet.com)), **SideStore**, or **ESign**.
+4. Open the tool on your iPhone, select `FuelRushMaui.ipa`, and tap **Install**.
+5. Go to `Settings -> General -> VPN & Device Management` on your iPhone and tap **Trust Certificate**.
+
+#### Method 2: Sideloadly Wireless / Wi-Fi Sync (Windows)
+1. Ensure your iPhone and Windows PC are connected to the same Wi-Fi network.
+2. Enable **iTunes Wi-Fi Sync** or **Apple Devices Wi-Fi Sync** on Windows.
+3. Open **Sideloadly** on Windows.
+4. Under the device dropdown, select your iPhone detected over Wi-Fi.
+5. Drag & drop `FuelRushMaui.ipa`, enter your Apple ID, and click **Start**.
+
+#### Method 3: Appetize.io (Run iOS App Live in Web Browser - Zero Hardware Required!)
+1. Go to [Appetize.io](https://appetize.io) (Free Account).
+2. Download `FuelRushMaui_iOS_Simulator.zip` from your [GitHub Releases](https://github.com/praveshbalaji/FuelRushMaui/releases/latest).
+3. Upload the `.zip` to Appetize.io.
+4. It generates an **interactive web link** where anyone can click and play your iOS app directly in Chrome/Edge! Perfect for showcasing on LinkedIn or portfolio without physical hardware.
 
 ---
 
