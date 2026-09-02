@@ -69,7 +69,9 @@ namespace FuelRushMaui.Services
             });
         }
 
+#if IOS || MACCATALYST
         private AVFoundation.AVAudioPlayer? _iosBgmPlayer;
+#endif
 
         public void StopBgm()
         {
