@@ -3,6 +3,10 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Maui.Storage;
+#if IOS || MACCATALYST
+using Foundation;
+using AVFoundation;
+#endif
 
 namespace FuelRushMaui.Services
 {

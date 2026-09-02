@@ -79,6 +79,7 @@
 		<MtouchFloat32>true</MtouchFloat32>
 		<MtouchUseLlvm>true</MtouchUseLlvm>
 		<RuntimeIdentifiers>iossimulator-x64;iossimulator-arm64;ios-arm64</RuntimeIdentifiers>
+		<CodesignRequireProvisioningProfile Condition="'$(EnableCodeSigning)' == 'false'">false</CodesignRequireProvisioningProfile>
 	</PropertyGroup>
 
 	<ItemGroup>

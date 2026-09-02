@@ -104,33 +104,39 @@ jobs:
         run: |
           dotnet workload install maui
 
+      - name: Build iOS Simulator App Package (for Appetize.io Browser Streaming)
+        run: |
+          dotnet publish FuelRushMaui.csproj \
+            -f net10.0-ios \
+            -c Release \
+            -p:RuntimeIdentifier=iossimulator-x64 \
+            -p:EnableCodeSigning=false \
+            -p:CodesignRequireProvisioningProfile=false \
+            -o output/ios_sim
+
+          mkdir -p release_assets
+          cd output/ios_sim
+          zip -r ../../release_assets/FuelRushMaui_iOS_Simulator.zip .
+
       - name: Build & Package iOS IPA (for Sideloadly on Windows/Mac)
+        continue-on-error: true
         run: |
           dotnet publish FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
             -p:RuntimeIdentifier=ios-arm64 \
-            -p:ArchiveOnBuild=true \
+            -p:ArchiveOnBuild=false \
             -p:EnableCodeSigning=false \
+            -p:CodesignRequireProvisioningProfile=false \
             -o output/ios_device
 
-          mkdir -p release_assets
           mkdir -p Payload
           APP_PATH=$(find output/ios_device bin/Release -name "*.app" -type d 2>/dev/null | head -n 1)
           echo "Found iOS App bundle at: $APP_PATH"
-          cp -r "$APP_PATH" Payload/
-          zip -r release_assets/FuelRushMaui.ipa Payload
-
-      - name: Build iOS Simulator App Package
-        run: |
-          dotnet build FuelRushMaui.csproj \
-            -f net10.0-ios \
-            -c Release \
-            -p:RuntimeIdentifier=iossimulator-x64 \
-            -o output/ios_sim
-
-          cd output/ios_sim
-          zip -r ../../release_assets/FuelRushMaui_iOS_Simulator.zip .
+          if [ -n "$APP_PATH" ]; then
+            cp -r "$APP_PATH" Payload/
+            zip -r release_assets/FuelRushMaui.ipa Payload
+          fi
 
       - name: Attach iOS Builds to Release
         uses: softprops/action-gh-release@v2
@@ -138,7 +144,7 @@ jobs:
           tag_name: "latest"
           make_latest: true
           files: |
-            release_assets/FuelRushMaui.ipa
             release_assets/FuelRushMaui_iOS_Simulator.zip
+            release_assets/*.ipa
 
 
