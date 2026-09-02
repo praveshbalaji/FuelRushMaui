@@ -49,8 +49,31 @@ namespace FuelRushMaui.Renderers
                 $"car_{id}.scale-100.png"
             };
 
+            var asm = typeof(GameCanvasDrawable).Assembly;
+            var resourceNames = asm.GetManifestResourceNames();
+
             foreach (var name in candidateNames)
             {
+                // 1. Try Assembly Embedded Resource Stream
+                try
+                {
+                    var matchResource = resourceNames.FirstOrDefault(r => r.EndsWith(name, StringComparison.OrdinalIgnoreCase));
+                    if (matchResource != null)
+                    {
+                        using var stream = asm.GetManifestResourceStream(matchResource);
+                        if (stream != null)
+                        {
+                            var img = PlatformImage.FromStream(stream);
+                            if (img != null) return img;
+                        }
+                    }
+                }
+                catch
+                {
+                    // Continue to next fallback
+                }
+
+                // 2. Try App Package File System
                 try
                 {
                     using var stream = await FileSystem.OpenAppPackageFileAsync(name);
@@ -62,26 +85,32 @@ namespace FuelRushMaui.Renderers
                 }
                 catch
                 {
-                    // Try next candidate filename
+                    // Continue to next fallback
                 }
-            }
 
-            // Direct local file system check fallback for desktop output paths
-            foreach (var name in candidateNames)
-            {
+                // 3. Try Direct Local File System Paths
                 try
                 {
-                    string localPath = Path.Combine(AppContext.BaseDirectory, name);
-                    if (File.Exists(localPath))
+                    string[] pathsToTry = new[]
                     {
-                        using var stream = File.OpenRead(localPath);
-                        var img = PlatformImage.FromStream(stream);
-                        if (img != null) return img;
+                        Path.Combine(AppContext.BaseDirectory, name),
+                        Path.Combine(AppContext.BaseDirectory, "Resources", "Images", name),
+                        Path.Combine(AppContext.BaseDirectory, "Resources", "Raw", name)
+                    };
+
+                    foreach (var p in pathsToTry)
+                    {
+                        if (File.Exists(p))
+                        {
+                            using var stream = File.OpenRead(p);
+                            var img = PlatformImage.FromStream(stream);
+                            if (img != null) return img;
+                        }
                     }
                 }
                 catch
                 {
-                    // Ignore and try next
+                    // Continue to next fallback
                 }
             }
 
@@ -473,6 +502,7 @@ namespace FuelRushMaui.Renderers
                 // Trigger on-demand background image load if missing from cache
                 if (!_carImagesCache.ContainsKey(carId))
                 {
+                    _carImagesCache[carId] = null!; // Set temporary sentinel to avoid re-triggering task every frame
                     _ = System.Threading.Tasks.Task.Run(async () =>
                     {
                         var img = await LoadSingleCarImageAsync(carId);
@@ -483,19 +513,37 @@ namespace FuelRushMaui.Renderers
                     });
                 }
 
-                // Vector fallback while image is loading
+                // High-detail vector fallback customized to current vehicle specs & generation colors
                 Color priColor = Color.FromArgb(vehicle.PrimaryColor ?? "#F4F4F0");
                 Color secColor = Color.FromArgb(vehicle.SecondaryColor ?? "#0F172A");
                 Color accColor = Color.FromArgb(vehicle.AccentColor ?? "#0055FF");
 
+                // Main Chassis Body
                 canvas.FillColor = priColor;
                 canvas.FillRoundedRectangle(-w / 2f, -h / 2f, w, h, 14);
 
-                canvas.FillColor = accColor;
-                canvas.FillRoundedRectangle(-w / 2f + 2, -h / 2f - 3, w - 4, 7, 3);
-
+                // Windshield & Glass
                 canvas.FillColor = secColor;
-                canvas.FillRoundedRectangle(-w / 2f + 6, -h * 0.28f, w - 12, h * 0.52f, 8);
+                canvas.FillRoundedRectangle(-w / 2f + 5, -h * 0.28f, w - 10, h * 0.52f, 8);
+
+                // Front Bumper / Hood Accent
+                canvas.FillColor = accColor;
+                canvas.FillRoundedRectangle(-w / 2f + 2, -h / 2f - 2, w - 4, 8, 3);
+
+                // Racing Stripes if enabled
+                if (vehicle.HasRacingStripes)
+                {
+                    canvas.FillColor = accColor;
+                    canvas.FillRectangle(-4, -h / 2f, 3, h);
+                    canvas.FillRectangle(1, -h / 2f, 3, h);
+                }
+
+                // Rear Wing/Spoiler if enabled
+                if (vehicle.HasSpoiler)
+                {
+                    canvas.FillColor = secColor;
+                    canvas.FillRoundedRectangle(-w / 2f - 2, h / 2f - 4, w + 4, 8, 3);
+                }
             }
 
             // Nitro Exhaust Flame Cones
