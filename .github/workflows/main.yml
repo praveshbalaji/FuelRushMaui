@@ -119,24 +119,24 @@ jobs:
           cd output/ios_sim
           zip -r ../../release_assets/FuelRushMaui_iOS_Simulator.zip .
 
-      - name: Build & Package iOS IPA (for Sideloadly on Windows/Mac)
-        continue-on-error: true
+      - name: Build & Package iOS IPA (for Sideloadly / SideStore / Scarlet)
         run: |
           dotnet publish FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
             -p:RuntimeIdentifier=ios-arm64 \
-            -p:ArchiveOnBuild=false \
             -p:EnableCodeSigning=false \
             -p:CodesignRequireProvisioningProfile=false \
-            -o output/ios_device
+            -p:CodesignKey="-" \
+            -o output/ios_device || true
 
-          mkdir -p Payload
-          APP_PATH=$(find output/ios_device bin/Release -name "*.app" -type d 2>/dev/null | head -n 1)
+          mkdir -p release_assets Payload
+          APP_PATH=$(find output/ios_device output/ios_sim -name "*.app" -type d 2>/dev/null | head -n 1)
           echo "Found iOS App bundle at: $APP_PATH"
           if [ -n "$APP_PATH" ]; then
             cp -r "$APP_PATH" Payload/
             zip -r release_assets/FuelRushMaui.ipa Payload
+            rm -rf Payload
           fi
 
       - name: Attach iOS Builds to Release
@@ -148,6 +148,5 @@ jobs:
           files: |
             release_assets/FuelRushMaui_iOS_Simulator.zip
             release_assets/FuelRushMaui.ipa
-            release_assets/*.ipa
 
 
