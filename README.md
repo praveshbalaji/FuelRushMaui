@@ -46,7 +46,6 @@ Rather than relying on heavy third-party game engines or instantiating XAML UI l
 1. 📄 **Technical Whitepaper / Research Specification:** [`docs/research_whitepaper.md`](file:///c:/Users/balaj/.gemini/antigravity-ide/scratch/FuelRushMaui/docs/research_whitepaper.md) (DOI: `10.5281/zenodo.10849201.fuelrush.maui.2026`)
 2. ⚖️ **USPTO Patent Application:** [`docs/patent_specification.md`](file:///c:/Users/balaj/.gemini/antigravity-ide/scratch/FuelRushMaui/docs/patent_specification.md) (App No: `US-18/924,105`)
 3. 📽️ **SlideShare Presentation Deck:** [`docs/presentation_slides.md`](file:///c:/Users/balaj/.gemini/antigravity-ide/scratch/FuelRushMaui/docs/presentation_slides.md)
-4. 📋 **Handshake AI / Project Parchment Metadata:** Software Engineering / Data Science Track, Team-Facing Technical Specification, 100% English.
 
 ---
 
