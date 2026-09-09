@@ -5,11 +5,13 @@ on:
     branches: [ "main", "master" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release-android:
     name: Build & Release Android APK
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
@@ -91,6 +93,8 @@ jobs:
     name: Build iOS Bundle (.app / .ipa)
     runs-on: macos-14
     needs: build-and-release-android
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -113,7 +117,21 @@ jobs:
 
       - name: Build iOS Simulator App & IPA Package
         run: |
-          # Build simulator app bundle (for Appetize.io / Simulator)
+          mkdir -p release_assets Payload
+
+          # 1. Publish iOS device release build
+          dotnet publish FuelRushMaui.csproj \
+            -f net10.0-ios \
+            -c Release \
+            -p:RuntimeIdentifier=ios-arm64 \
+            -p:BuildIpa=true \
+            -p:ArchiveOnBuild=true \
+            -p:EnableCodeSigning=false \
+            -p:CodesignRequireProvisioningProfile=false \
+            -p:CodesignKey="-" \
+            -o output/ios_device || true
+
+          # 2. Publish iOS simulator build
           dotnet publish FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
@@ -122,32 +140,31 @@ jobs:
             -p:CodesignRequireProvisioningProfile=false \
             -o output/ios_sim || true
 
-          # Build device app bundle (for IPA creation)
-          dotnet publish FuelRushMaui.csproj \
-            -f net10.0-ios \
-            -c Release \
-            -p:RuntimeIdentifier=ios-arm64 \
-            -p:ArchiveOnBuild=true \
-            -p:EnableCodeSigning=false \
-            -p:CodesignRequireProvisioningProfile=false \
-            -p:CodesignKey="-" \
-            -o output/ios_device || true
-
-          mkdir -p release_assets Payload
-
-          # Package Simulator zip
-          if [ -d "output/ios_sim" ]; then
-            (cd output/ios_sim && zip -r ../../release_assets/FuelRushMaui_iOS_Simulator.zip .) || true
+          # 3. Locate compiled .ipa files
+          IPA_FOUND=$(find . -name "*.ipa" 2>/dev/null | head -n 1)
+          if [ -n "$IPA_FOUND" ]; then
+            echo "Found compiled IPA file at: $IPA_FOUND"
+            cp "$IPA_FOUND" release_assets/FuelRushMaui.ipa
           fi
 
-          # Package IPA for Sideloadly / AltStore / Scarlet / SideStore
-          APP_PATH=$(find output/ios_device output/ios_sim -name "*.app" -type d 2>/dev/null | head -n 1)
-          echo "Found iOS App bundle at: $APP_PATH"
-          if [ -n "$APP_PATH" ]; then
-            cp -r "$APP_PATH" Payload/
-            zip -r release_assets/FuelRushMaui.ipa Payload
-            rm -rf Payload
+          # 4. If no direct .ipa found, package .app bundle into Payload.ipa
+          if [ ! -f "release_assets/FuelRushMaui.ipa" ]; then
+            APP_FOUND=$(find output/ios_device output/ios_sim bin obj -name "*.app" -type d 2>/dev/null | head -n 1)
+            echo "Found iOS .app bundle at: $APP_FOUND"
+            if [ -n "$APP_FOUND" ]; then
+              cp -r "$APP_FOUND" Payload/
+              zip -r release_assets/FuelRushMaui.ipa Payload
+              rm -rf Payload
+            fi
           fi
+
+          # 5. Package Simulator zip if available
+          SIM_APP=$(find output/ios_sim bin obj -name "*.app" -type d 2>/dev/null | head -n 1)
+          if [ -n "$SIM_APP" ]; then
+            zip -r release_assets/FuelRushMaui_iOS_Simulator.zip "$SIM_APP" || true
+          fi
+
+          ls -la release_assets/ || true
 
       - name: Attach iOS Builds to Release
         uses: softprops/action-gh-release@v2
@@ -158,6 +175,7 @@ jobs:
           files: |
             release_assets/FuelRushMaui_iOS_Simulator.zip
             release_assets/FuelRushMaui.ipa
+
 
 
 
