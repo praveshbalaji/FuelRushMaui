@@ -113,7 +113,7 @@ jobs:
 
       - name: Select Xcode Version & Install .NET MAUI iOS Workloads
         run: |
-          sudo xcode-select -s /Applications/Xcode_15.4.app || sudo xcode-select -s /Applications/Xcode.app || true
+          sudo xcode-select -s /Applications/Xcode.app || true
           xcodebuild -version || true
           sudo dotnet workload install maui-ios maui --source https://api.nuget.org/v3/index.json
 
@@ -121,39 +121,39 @@ jobs:
         run: |
           mkdir -p release_assets Payload
 
-          echo "=== 1. Building iOS Simulator Target ==="
-          dotnet publish FuelRushMaui.csproj \
+          echo "=== 1. Building iOS Simulator Target (.app bundle) ==="
+          dotnet build FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
             -p:RuntimeIdentifier=iossimulator-arm64 \
+            -p:ValidateXcodeVersion=false \
             -p:EnableCodeSigning=false \
             -p:CodesignRequireProvisioningProfile=false \
             -p:DisableCodeSigning=true || true
 
-          echo "=== 2. Building iOS Device Target ==="
-          dotnet publish FuelRushMaui.csproj \
+          echo "=== 2. Building iOS Device Target (.app bundle) ==="
+          dotnet build FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
             -p:RuntimeIdentifier=ios-arm64 \
-            -p:BuildIpa=true \
-            -p:ArchiveOnBuild=true \
+            -p:ValidateXcodeVersion=false \
             -p:EnableCodeSigning=false \
             -p:CodesignRequireProvisioningProfile=false \
             -p:DisableCodeSigning=true \
-            -p:CodesignKey="" || true
+            -p:CodesignKey="-" || true
 
-          echo "=== 3. Searching Workspace for Build Output (.ipa / .app) ==="
-          find . -name "*.ipa" -o -name "*.app"
+          echo "=== 3. Searching Workspace for Build Output (.app / .ipa) ==="
+          find bin obj -name "*.app" -o -name "*.ipa"
 
-          # Locate compiled .ipa file
-          IPA_FOUND=$(find . -name "*.ipa" 2>/dev/null | head -n 1)
+          # 1. Locate compiled .ipa file if any
+          IPA_FOUND=$(find bin obj -name "*.ipa" 2>/dev/null | head -n 1)
           if [ -n "$IPA_FOUND" ]; then
             echo "Found compiled IPA file: $IPA_FOUND"
             cp "$IPA_FOUND" release_assets/FuelRushMaui.ipa
           fi
 
-          # Fallback: Package .app bundle into Payload/FuelRushMaui.ipa
-          APP_FOUND=$(find . -name "*.app" -type d 2>/dev/null | head -n 1)
+          # 2. Package .app bundle into Payload/ -> FuelRushMaui.ipa
+          APP_FOUND=$(find bin obj -name "*.app" -type d 2>/dev/null | head -n 1)
           if [ -n "$APP_FOUND" ]; then
             echo "Found iOS .app bundle: $APP_FOUND"
             if [ ! -f "release_assets/FuelRushMaui.ipa" ]; then
@@ -164,7 +164,6 @@ jobs:
             zip -r release_assets/FuelRushMaui_iOS_Simulator.zip "$APP_FOUND" || true
           fi
 
-          # Verify created release assets
           echo "=== 4. Release Assets Directory Content ==="
           ls -la release_assets/
 
@@ -183,3 +182,4 @@ jobs:
           files: |
             release_assets/FuelRushMaui.ipa
             release_assets/FuelRushMaui_iOS_Simulator.zip
+
