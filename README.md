@@ -22,15 +22,18 @@
   </p>
   
   <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.apk" style="background-color: #22C55E; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 16px; padding: 12px 24px; text-decoration: none; border-radius: 10px; display: inline-block;">
-      🤖 Download Android APK (`FuelRushMaui.apk`)
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.apk" style="background-color: #22C55E; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px; padding: 12px 20px; text-decoration: none; border-radius: 10px; display: inline-block;">
+      🤖 Download Android APK
     </a>
-    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.ipa" style="background-color: #007AFF; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 16px; padding: 12px 24px; text-decoration: none; border-radius: 10px; display: inline-block;">
-      🍏 Download iOS IPA (`FuelRushMaui.ipa`)
+    <a href="https://www.installonair.com/app-download-link/5HH3m8" style="background-color: #E11D48; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px; padding: 12px 20px; text-decoration: none; border-radius: 10px; display: inline-block;">
+      📲 1-Click Wireless iOS Install
+    </a>
+    <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest/download/FuelRushMaui.ipa" style="background-color: #007AFF; color: #FFFFFF; font-family: 'Montserrat', sans-serif; font-weight: bold; font-size: 15px; padding: 12px 20px; text-decoration: none; border-radius: 10px; display: inline-block;">
+      🍏 Download raw iOS IPA
     </a>
   </div>
   <p style="color: #94A3B8; font-size: 13px; margin-top: 14px;">
-    <b>iOS Install Instructions:</b> Sideload using <b>Sideloadly</b> (Windows/Mac), <b>SideStore</b>, or <b>Scarlet</b> | <a href="https://appetize.io" style="color: #38BDF8;">Run Live on Appetize.io Web Browser</a> | <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest" style="color: #38BDF8;">Releases Page</a>
+    <b>iOS Install Methods:</b> ⚡ <b><a href="https://www.installonair.com/app-download-link/5HH3m8" style="color: #FFD700; text-decoration: underline;">1-Click Wireless Install Link</a></b> | 🖥️ Sideload using <b>Sideloadly</b> / <b>AltStore</b> | 📱 <b>Scarlet</b> | <a href="https://github.com/praveshbalaji/FuelRushMaui/releases/latest" style="color: #38BDF8;">Releases Page</a>
   </p>
 </div>
 
