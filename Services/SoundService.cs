@@ -54,16 +54,27 @@ namespace FuelRushMaui.Services
                     mciSendString("play tokyodrift repeat", null, 0, IntPtr.Zero);
                     _isBgmPlaying = true;
 #elif IOS || MACCATALYST
-                    var url = Foundation.NSUrl.FromFilename(localPath);
-                    _iosBgmPlayer?.Stop();
-                    _iosBgmPlayer?.Dispose();
-                    _iosBgmPlayer = AVFoundation.AVAudioPlayer.FromUrl(url);
-                    if (_iosBgmPlayer != null)
+                    try
                     {
-                        _iosBgmPlayer.NumberOfLoops = -1;
-                        _iosBgmPlayer.Play();
-                        _isBgmPlaying = true;
+                        var audioSession = AVAudioSession.SharedInstance();
+                        audioSession.SetCategory(AVAudioSessionCategory.Ambient, out _);
+                        audioSession.SetActive(true, out _);
+
+                        if (File.Exists(localPath))
+                        {
+                            var url = Foundation.NSUrl.FromFilename(localPath);
+                            _iosBgmPlayer?.Stop();
+                            _iosBgmPlayer?.Dispose();
+                            _iosBgmPlayer = AVFoundation.AVAudioPlayer.FromUrl(url);
+                            if (_iosBgmPlayer != null)
+                            {
+                                _iosBgmPlayer.NumberOfLoops = -1;
+                                _iosBgmPlayer.Play();
+                                _isBgmPlaying = true;
+                            }
+                        }
                     }
+                    catch { }
 #endif
                 }
                 catch
@@ -192,17 +203,25 @@ namespace FuelRushMaui.Services
                         catch { }
                     });
 #elif IOS || MACCATALYST
-                    byte[] wavHeaderAndData = CreateWavByteArray(samples, sampleRate);
-                    var nsData = Foundation.NSData.FromArray(wavHeaderAndData);
-                    var player = AVFoundation.AVAudioPlayer.FromData(nsData);
-                    if (player != null)
+                    try
                     {
-                        player.Play();
-                        Task.Delay(durationMs + 120).ContinueWith(_ =>
+                        var audioSession = AVAudioSession.SharedInstance();
+                        audioSession.SetCategory(AVAudioSessionCategory.Ambient, out _);
+                        audioSession.SetActive(true, out _);
+
+                        byte[] wavHeaderAndData = CreateWavByteArray(samples, sampleRate);
+                        var nsData = Foundation.NSData.FromArray(wavHeaderAndData);
+                        var player = AVFoundation.AVAudioPlayer.FromData(nsData);
+                        if (player != null)
                         {
-                            try { player.Stop(); player.Dispose(); } catch { }
-                        });
+                            player.Play();
+                            Task.Delay(durationMs + 120).ContinueWith(_ =>
+                            {
+                                try { player.Stop(); player.Dispose(); } catch { }
+                            });
+                        }
                     }
+                    catch { }
 #endif
                 }
                 catch
