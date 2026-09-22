@@ -129,7 +129,7 @@ jobs:
             -p:ValidateXcodeVersion=false \
             -p:EnableCodeSigning=false \
             -p:CodesignRequireProvisioningProfile=false \
-            -p:DisableCodeSigning=true
+            -p:DisableCodeSigning=true > sim_build.log 2>&1 || { echo "=== SIMULATOR BUILD ERROR LOG ==="; cat sim_build.log; exit 1; }
 
           echo "=== 2. Building iOS Device Target (ios-arm64) ==="
           dotnet publish FuelRushMaui.csproj \
