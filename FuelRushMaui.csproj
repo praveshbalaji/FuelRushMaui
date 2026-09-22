@@ -77,7 +77,8 @@
 	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
 		<MtouchLink>SdkOnly</MtouchLink>
 		<MtouchFloat32>true</MtouchFloat32>
-		<MtouchUseLlvm>true</MtouchUseLlvm>
+		<MtouchUseLlvm>false</MtouchUseLlvm>
+		<UseInterpreter>true</UseInterpreter>
 		<RuntimeIdentifiers>iossimulator-x64;iossimulator-arm64;ios-arm64</RuntimeIdentifiers>
 		<CodesignRequireProvisioningProfile Condition="'$(EnableCodeSigning)' == 'false'">false</CodesignRequireProvisioningProfile>
 	</PropertyGroup>
