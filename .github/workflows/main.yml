@@ -121,7 +121,17 @@ jobs:
         run: |
           mkdir -p release_assets
 
-          echo "=== 1. Building iOS Device Target (ios-arm64) via dotnet publish ==="
+          echo "=== 1. Building iOS Simulator Target (iossimulator-arm64) ==="
+          dotnet build FuelRushMaui.csproj \
+            -f net10.0-ios \
+            -c Release \
+            -p:RuntimeIdentifier=iossimulator-arm64 \
+            -p:ValidateXcodeVersion=false \
+            -p:EnableCodeSigning=false \
+            -p:CodesignRequireProvisioningProfile=false \
+            -p:DisableCodeSigning=true
+
+          echo "=== 2. Building iOS Device Target (ios-arm64) ==="
           dotnet publish FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
@@ -132,16 +142,6 @@ jobs:
             -p:CodesignRequireProvisioningProfile=false \
             -p:DisableCodeSigning=true \
             -p:CodesignKey="-" || true
-
-          echo "=== 2. Building iOS Simulator Target (iossimulator-arm64) ==="
-          dotnet build FuelRushMaui.csproj \
-            -f net10.0-ios \
-            -c Release \
-            -p:RuntimeIdentifier=iossimulator-arm64 \
-            -p:ValidateXcodeVersion=false \
-            -p:EnableCodeSigning=false \
-            -p:CodesignRequireProvisioningProfile=false \
-            -p:DisableCodeSigning=true || true
 
           echo "=== 3. Searching Workspace for Build Output (.app / .ipa) ==="
           find bin obj -name "*.app" -o -name "*.ipa"
