@@ -57,8 +57,8 @@ namespace FuelRushMaui.Services
                     try
                     {
                         var audioSession = AVAudioSession.SharedInstance();
-                        audioSession.SetCategory(AVAudioSessionCategory.Ambient, out _);
-                        audioSession.SetActive(true, out _);
+                        audioSession.SetCategory(AVAudioSessionCategory.Ambient);
+                        audioSession.SetActive(true);
 
                         if (File.Exists(localPath))
                         {
@@ -206,8 +206,8 @@ namespace FuelRushMaui.Services
                     try
                     {
                         var audioSession = AVAudioSession.SharedInstance();
-                        audioSession.SetCategory(AVAudioSessionCategory.Ambient, out _);
-                        audioSession.SetActive(true, out _);
+                        audioSession.SetCategory(AVAudioSessionCategory.Ambient);
+                        audioSession.SetActive(true);
 
                         byte[] wavHeaderAndData = CreateWavByteArray(samples, sampleRate);
                         var nsData = Foundation.NSData.FromArray(wavHeaderAndData);
