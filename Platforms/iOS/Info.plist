@@ -4,10 +4,6 @@
 <dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>CFBundleIconName</key>
-	<string>AppIcon</string>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>UILaunchStoryboardName</key>
 	<string>MauiSplash</string>
 	<key>UIDeviceFamily</key>
