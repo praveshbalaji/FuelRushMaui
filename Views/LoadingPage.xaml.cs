@@ -69,10 +69,10 @@ namespace FuelRushMaui.Views
 
             // Motion animation: Move turbo car forward + engine vibration pulse
             await Task.WhenAll(
-                imgTurboCar.TranslateTo(targetX, 0, 300, Easing.CubicOut),
-                imgTurboCar.ScaleTo(1.08, 150, Easing.SinOut)
+                imgTurboCar.TranslateToAsync(targetX, 0, 300, Easing.CubicOut),
+                imgTurboCar.ScaleToAsync(1.08, 150, Easing.SinOut)
             );
-            await imgTurboCar.ScaleTo(1.00, 150, Easing.SinIn);
+            await imgTurboCar.ScaleToAsync(1.00, 150, Easing.SinIn);
             await Task.Delay(100);
         }
     }

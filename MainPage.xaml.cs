@@ -211,7 +211,7 @@ namespace FuelRushMaui
         private double _wheelCurrentRotation = 0;
         private bool _isPanning = false;
 
-        private void OnSteeringWheelPanUpdated(object sender, PanUpdatedEventArgs e)
+        private void OnSteeringWheelPanUpdated(object? sender, PanUpdatedEventArgs e)
         {
             switch (e.StatusType)
             {
@@ -267,81 +267,81 @@ namespace FuelRushMaui
             animate.Commit(this, "SteeringWheelReturn", 16, 250, Easing.CubicOut);
         }
 
-        private void OnGasPressed(object sender, EventArgs e)
+        private void OnGasPressed(object? sender, EventArgs e)
         {
             _gameEngine.IsGasPressed = true;
         }
 
-        private void OnGasReleased(object sender, EventArgs e)
+        private void OnGasReleased(object? sender, EventArgs e)
         {
             _gameEngine.IsGasPressed = false;
         }
 
-        private void OnBrakePressed(object sender, EventArgs e)
+        private void OnBrakePressed(object? sender, EventArgs e)
         {
             _gameEngine.IsBrakePressed = true;
         }
 
-        private void OnBrakeReleased(object sender, EventArgs e)
+        private void OnBrakeReleased(object? sender, EventArgs e)
         {
             _gameEngine.IsBrakePressed = false;
         }
 
-        private void OnNitroClicked(object sender, EventArgs e)
+        private void OnNitroClicked(object? sender, EventArgs e)
         {
             _gameEngine.ActivateNitro();
         }
 
-        private void OnGearShiftClicked(object sender, EventArgs e)
+        private void OnGearShiftClicked(object? sender, EventArgs e)
         {
             _gameEngine.ShiftGearNext();
         }
 
-        private void OnDriftModeClicked(object sender, EventArgs e)
+        private void OnDriftModeClicked(object? sender, EventArgs e)
         {
             _gameEngine.ToggleDriftMode();
         }
 
-        private void OnSuspensionClicked(object sender, EventArgs e)
+        private void OnSuspensionClicked(object? sender, EventArgs e)
         {
             _gameEngine.ToggleSuspension();
         }
 
-        private void OnResetCarClicked(object sender, EventArgs e)
+        private void OnResetCarClicked(object? sender, EventArgs e)
         {
             _gameEngine.ResetPlayerCar();
         }
 
-        private void OnCameraSwitchClicked(object sender, EventArgs e)
+        private void OnCameraSwitchClicked(object? sender, EventArgs e)
         {
             // Toggle camera perspective view
         }
 
-        private void OnPlayClicked(object sender, EventArgs e)
+        private void OnPlayClicked(object? sender, EventArgs e)
         {
             _gameEngine.StartGame();
         }
 
-        private void OnPauseClicked(object sender, EventArgs e)
+        private void OnPauseClicked(object? sender, EventArgs e)
         {
             _gameEngine.PauseGame();
         }
 
-        private void OnRestartClicked(object sender, EventArgs e)
+        private void OnRestartClicked(object? sender, EventArgs e)
         {
             pauseOverlay.IsVisible = false;
             gameOverOverlay.IsVisible = false;
             _gameEngine.RestartGame();
         }
 
-        private void OnReplayClicked(object sender, EventArgs e)
+        private void OnReplayClicked(object? sender, EventArgs e)
         {
             pauseOverlay.IsVisible = false;
             gameOverOverlay.IsVisible = false;
             _gameEngine.RestartGame();
         }
 
-        private void OnQuitToMenuClicked(object sender, EventArgs e)
+        private void OnQuitToMenuClicked(object? sender, EventArgs e)
         {
             _gameEngine.ReturnToMenu();
             pauseOverlay.IsVisible = false;
@@ -351,19 +351,19 @@ namespace FuelRushMaui
             UpdateMenuUI();
         }
 
-        private void OnGarageClicked(object sender, EventArgs e)
+        private void OnGarageClicked(object? sender, EventArgs e)
         {
             garageModal.Initialize(_garageService, _storageService, _gameEngine);
             garageModal.IsVisible = true;
         }
 
-        private void OnLeaderboardClicked(object sender, EventArgs e)
+        private void OnLeaderboardClicked(object? sender, EventArgs e)
         {
             scoresModal.LoadData(_storageService);
             scoresModal.IsVisible = true;
         }
 
-        private void OnSoundToggleClicked(object sender, EventArgs e)
+        private void OnSoundToggleClicked(object? sender, EventArgs e)
         {
             bool current = _storageService.IsSoundEnabled();
             _storageService.SetSoundEnabled(!current);

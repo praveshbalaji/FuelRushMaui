@@ -111,11 +111,11 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - name: Setup Xcode & Install .NET MAUI iOS Workload
+      - name: Setup Xcode & Install .NET MAUI Workloads
         run: |
           echo "Current Xcode developer directory: $(xcode-select -p)"
           xcodebuild -version
-          dotnet workload install maui-ios --source https://api.nuget.org/v3/index.json
+          dotnet workload install maui maui-ios maui-android --source https://api.nuget.org/v3/index.json
 
       - name: Build & Package iOS App & IPA
         run: |
