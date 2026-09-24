@@ -82,7 +82,6 @@
 		<MtouchUseLlvm>false</MtouchUseLlvm>
 		<UseInterpreter>true</UseInterpreter>
 		<MtouchInterpreter>all</MtouchInterpreter>
-		<MtouchExtraArgs>--interpreter</MtouchExtraArgs>
 		<MtouchFastDev>false</MtouchFastDev>
 		<RuntimeIdentifiers>iossimulator-x64;iossimulator-arm64;ios-arm64</RuntimeIdentifiers>
 		<CodesignRequireProvisioningProfile Condition="'$(EnableCodeSigning)' == 'false'">false</CodesignRequireProvisioningProfile>

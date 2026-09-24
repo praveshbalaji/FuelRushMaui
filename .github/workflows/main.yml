@@ -137,7 +137,7 @@ jobs:
             -p:ValidateXcodeVersion=false \
             -p:CodesignKey="-" \
             -p:CodesignProvision="" \
-            -p:CodesignRequireProvisioningProfile=false > device_build.log 2>&1 || { echo "=== DEVICE BUILD ERROR LOG ==="; cat device_build.log; exit 1; }
+            -p:CodesignRequireProvisioningProfile=false
 
           echo "=== 2. Building iOS Simulator Target (iossimulator-arm64) ==="
           dotnet build FuelRushMaui.csproj \
@@ -147,7 +147,7 @@ jobs:
             -p:PublishTrimmed=false \
             -p:TrimMode=none \
             -p:MtouchLink=None \
-            -p:ValidateXcodeVersion=false > sim_build.log 2>&1 || true
+            -p:ValidateXcodeVersion=false || true
 
           echo "=== 3. Packaging Physical Device IPA for Sideloadly ==="
           DEVICE_IPA=$(find bin obj -name "*.ipa" 2>/dev/null | head -n 1)
