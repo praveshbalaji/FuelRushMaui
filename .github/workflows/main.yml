@@ -101,7 +101,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -115,27 +115,29 @@ jobs:
         run: |
           echo "Current Xcode developer directory: $(xcode-select -p)"
           xcodebuild -version
-          sudo dotnet workload install maui-ios maui --source https://api.nuget.org/v3/index.json
+          dotnet workload install maui-ios --source https://api.nuget.org/v3/index.json
 
       - name: Build & Package iOS App & IPA
         run: |
           mkdir -p release_assets Payload
 
           echo "=== 1. Building iOS Physical Device Target (ios-arm64) ==="
-          dotnet build FuelRushMaui.csproj \
+          dotnet publish FuelRushMaui.csproj \
             -f net10.0-ios \
             -c Release \
             -p:RuntimeIdentifier=ios-arm64 \
+            -p:BuildIpa=true \
             -p:PublishTrimmed=false \
             -p:TrimMode=none \
             -p:MtouchLink=None \
+            -p:UseInterpreter=true \
+            -p:MtouchInterpreter=all \
+            -p:MtouchUseLlvm=false \
             -p:ServerBuild=true \
             -p:ValidateXcodeVersion=false \
             -p:CodesignKey="-" \
             -p:CodesignProvision="" \
-            -p:EnableCodeSigning=false \
-            -p:CodesignRequireProvisioningProfile=false \
-            -p:DisableCodeSigning=true > device_build.log 2>&1 || { echo "=== DEVICE BUILD ERROR LOG ==="; cat device_build.log; exit 1; }
+            -p:CodesignRequireProvisioningProfile=false > device_build.log 2>&1 || { echo "=== DEVICE BUILD ERROR LOG ==="; cat device_build.log; exit 1; }
 
           echo "=== 2. Building iOS Simulator Target (iossimulator-arm64) ==="
           dotnet build FuelRushMaui.csproj \
@@ -145,24 +147,26 @@ jobs:
             -p:PublishTrimmed=false \
             -p:TrimMode=none \
             -p:MtouchLink=None \
-            -p:ValidateXcodeVersion=false \
-            -p:EnableCodeSigning=false \
-            -p:CodesignRequireProvisioningProfile=false \
-            -p:DisableCodeSigning=true > sim_build.log 2>&1 || true
+            -p:ValidateXcodeVersion=false > sim_build.log 2>&1 || true
 
           echo "=== 3. Packaging Physical Device IPA for Sideloadly ==="
-          DEVICE_APP=$(find bin/Release/net10.0-ios/ios-arm64 bin obj -name "FuelRushMaui.app" -path "*ios-arm64*" -type d 2>/dev/null | head -n 1)
-          if [ -z "$DEVICE_APP" ]; then
-            DEVICE_APP=$(find bin obj -name "*.app" -not -path "*simulator*" -type d 2>/dev/null | head -n 1)
-          fi
+          DEVICE_IPA=$(find bin obj -name "*.ipa" -type f 2>/dev/null | head -n 1)
+          if [ -n "$DEVICE_IPA" ]; then
+            cp "$DEVICE_IPA" release_assets/FuelRushMaui.ipa
+          else
+            DEVICE_APP=$(find bin/Release/net10.0-ios/ios-arm64 bin obj -name "FuelRushMaui.app" -path "*ios-arm64*" -type d 2>/dev/null | head -n 1)
+            if [ -z "$DEVICE_APP" ]; then
+              DEVICE_APP=$(find bin obj -name "*.app" -not -path "*simulator*" -type d 2>/dev/null | head -n 1)
+            fi
 
-          echo "Found Physical Device App bundle at: $DEVICE_APP"
-          if [ -n "$DEVICE_APP" ]; then
-            rm -rf Payload
-            mkdir -p Payload
-            cp -R "$DEVICE_APP" Payload/
-            zip -r release_assets/FuelRushMaui.ipa Payload
-            rm -rf Payload
+            echo "Found Physical Device App bundle at: $DEVICE_APP"
+            if [ -n "$DEVICE_APP" ]; then
+              rm -rf Payload
+              mkdir -p Payload
+              cp -R "$DEVICE_APP" Payload/
+              zip -r release_assets/FuelRushMaui.ipa Payload
+              rm -rf Payload
+            fi
           fi
 
           SIM_APP=$(find bin obj -name "*.app" -path "*simulator*" -type d 2>/dev/null | head -n 1)

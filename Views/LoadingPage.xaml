@@ -6,7 +6,7 @@
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False">
 
-    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
         <!-- Dark Cyber Environment Background Grid -->
         <BoxView Color="#070A10" HorizontalOptions="Fill" VerticalOptions="Fill" />
 

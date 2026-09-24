@@ -44,14 +44,20 @@ namespace FuelRushMaui.Views
                 // Smooth Navigation to AppShell
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Application.Current!.MainPage = new AppShell();
+                    if (Application.Current != null && Application.Current.Windows.Count > 0)
+                    {
+                        Application.Current.Windows[0].Page = new AppShell();
+                    }
                 });
             }
             catch
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    Application.Current!.MainPage = new AppShell();
+                    if (Application.Current != null && Application.Current.Windows.Count > 0)
+                    {
+                        Application.Current.Windows[0].Page = new AppShell();
+                    }
                 });
             }
         }

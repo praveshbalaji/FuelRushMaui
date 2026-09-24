@@ -126,7 +126,7 @@ namespace FuelRushMaui.Views
             }
         }
 
-        private void OnPrevClicked(object sender, EventArgs e)
+        private void OnPrevClicked(object? sender, EventArgs e)
         {
             if (_viewModel != null)
             {
@@ -136,7 +136,7 @@ namespace FuelRushMaui.Views
             }
         }
 
-        private void OnNextClicked(object sender, EventArgs e)
+        private void OnNextClicked(object? sender, EventArgs e)
         {
             if (_viewModel != null)
             {
@@ -146,7 +146,7 @@ namespace FuelRushMaui.Views
             }
         }
 
-        private void OnActionClicked(object sender, EventArgs e)
+        private void OnActionClicked(object? sender, EventArgs e)
         {
             if (_viewModel == null || _vehicles.Count == 0) return;
 
@@ -162,7 +162,7 @@ namespace FuelRushMaui.Views
             UpdateUI();
         }
 
-        private void OnCloseClicked(object sender, EventArgs e)
+        private void OnCloseClicked(object? sender, EventArgs e)
         {
             OnClosed?.Invoke();
         }

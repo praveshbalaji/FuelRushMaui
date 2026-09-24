@@ -18,7 +18,7 @@ namespace FuelRushMaui.Views
             cvScores.ItemsSource = storageService.GetHighScores();
         }
 
-        private void OnCloseClicked(object sender, EventArgs e)
+        private void OnCloseClicked(object? sender, EventArgs e)
         {
             OnClosed?.Invoke();
         }

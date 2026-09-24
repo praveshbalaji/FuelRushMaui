@@ -11,8 +11,8 @@
 
         <!-- 1. 3D CHASE CAMERA GAME CANVAS & ENVIRONMENT -->
         <GraphicsView x:Name="gameGraphicsView"
-                      HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand" />
+                      HorizontalOptions="Fill"
+                      VerticalOptions="Fill" />
 
         <!-- 2. AAA MOBILE RACING SIMULATOR HUD LAYER (Safe Off-Road Padding 52,16,52,16) -->
         <Grid x:Name="hudLayer" IsVisible="False" Padding="52,16,52,16">
@@ -208,7 +208,7 @@
 
         <!-- 3. LANDING PAGE OVERLAY (RESPONSIVE PORTRAIT & LANDSCAPE) -->
         <Grid x:Name="menuOverlay" BackgroundColor="#F5070A10" Padding="0">
-            <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <ScrollView HorizontalOptions="Fill" VerticalOptions="Fill">
                 <Grid Padding="24,20" VerticalOptions="Center" HorizontalOptions="Center">
                     <StackLayout WidthRequest="440" Spacing="18" HorizontalOptions="Center">
                         
@@ -246,14 +246,14 @@
                         </StackLayout>
 
                         <!-- Mustang GT Showcase Glassmorphic Card -->
-                        <Border BackgroundColor="#D9161C27" Stroke="#113979" StrokeThickness="1.5" Padding="16" HorizontalOptions="FillAndExpand">
+                        <Border BackgroundColor="#D9161C27" Stroke="#113979" StrokeThickness="1.5" Padding="16" HorizontalOptions="Fill">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="20"/>
                             </Border.StrokeShape>
                             <StackLayout Spacing="12">
                                 
                                 <!-- Vehicle Image Frame -->
-                                <Border BackgroundColor="#0A0E17" Padding="10" Stroke="#113979" StrokeThickness="1.5" HeightRequest="130" HorizontalOptions="FillAndExpand">
+                                <Border BackgroundColor="#0A0E17" Padding="10" Stroke="#113979" StrokeThickness="1.5" HeightRequest="130" HorizontalOptions="Fill">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="14"/>
                                     </Border.StrokeShape>
@@ -314,7 +314,7 @@
                         </Border>
 
                         <!-- Main Menu Action Buttons Stack -->
-                        <StackLayout Spacing="12" HorizontalOptions="FillAndExpand">
+                        <StackLayout Spacing="12" HorizontalOptions="Fill">
                             <Button Text="▶ START SIMULATOR"
                                     Clicked="OnPlayClicked"
                                     BackgroundColor="#00E5FF"
@@ -323,7 +323,7 @@
                                     FontSize="18"
                                     CornerRadius="18"
                                     HeightRequest="56"
-                                    HorizontalOptions="FillAndExpand">
+                                    HorizontalOptions="Fill">
                                 <Button.Shadow>
                                     <Shadow Brush="#00E5FF" Offset="0,0" Radius="12" Opacity="0.7" />
                                 </Button.Shadow>
@@ -337,7 +337,7 @@
                                     FontSize="15"
                                     CornerRadius="16"
                                     HeightRequest="48"
-                                    HorizontalOptions="FillAndExpand" />
+                                    HorizontalOptions="Fill" />
 
                             <Button Text="🏆 LEADERBOARD &amp; RECORDS"
                                     Clicked="OnLeaderboardClicked"
@@ -347,7 +347,7 @@
                                     FontSize="15"
                                     CornerRadius="16"
                                     HeightRequest="48"
-                                    HorizontalOptions="FillAndExpand" />
+                                    HorizontalOptions="Fill" />
 
                             <Button x:Name="btnSoundToggle"
                                     Text="🔊 AUDIO: ON"
