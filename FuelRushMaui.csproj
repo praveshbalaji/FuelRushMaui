@@ -75,7 +75,7 @@
 
 	<!-- iOS Configuration for Simulator & Device Build -->
 	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
-		<MtouchLink>SdkOnly</MtouchLink>
+		<MtouchLink>None</MtouchLink>
 		<MtouchFloat32>true</MtouchFloat32>
 		<MtouchUseLlvm>false</MtouchUseLlvm>
 		<UseInterpreter>true</UseInterpreter>
