@@ -56,9 +56,16 @@ namespace FuelRushMaui.Services
 #elif IOS || MACCATALYST
                     try
                     {
-                        var audioSession = AVAudioSession.SharedInstance();
-                        audioSession.SetCategory(AVAudioSessionCategory.Ambient);
-                        audioSession.SetActive(true);
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            try
+                            {
+                                var audioSession = AVAudioSession.SharedInstance();
+                                audioSession.SetCategory(AVAudioSessionCategory.Ambient, out _);
+                                audioSession.SetActive(true, out _);
+                            }
+                            catch { }
+                        });
 
                         if (File.Exists(localPath))
                         {
@@ -205,10 +212,6 @@ namespace FuelRushMaui.Services
 #elif IOS || MACCATALYST
                     try
                     {
-                        var audioSession = AVAudioSession.SharedInstance();
-                        audioSession.SetCategory(AVAudioSessionCategory.Ambient);
-                        audioSession.SetActive(true);
-
                         byte[] wavHeaderAndData = CreateWavByteArray(samples, sampleRate);
                         var nsData = Foundation.NSData.FromArray(wavHeaderAndData);
                         var player = AVFoundation.AVAudioPlayer.FromData(nsData);
