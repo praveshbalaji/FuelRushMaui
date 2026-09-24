@@ -124,7 +124,7 @@ jobs:
           echo "=== 1. Building iOS Physical Device Target (ios-arm64) ==="
           dotnet publish FuelRushMaui.csproj \
             -f net10.0-ios \
-            -c Release \
+            -c Debug \
             -p:RuntimeIdentifier=ios-arm64 \
             -p:BuildIpa=true \
             -p:PublishTrimmed=false \
@@ -133,6 +133,8 @@ jobs:
             -p:UseInterpreter=true \
             -p:MtouchInterpreter=all \
             -p:MtouchUseLlvm=false \
+            -p:MtouchFastDev=false \
+            -p:Optimize=true \
             -p:ServerBuild=true \
             -p:ValidateXcodeVersion=false \
             -p:CodesignKey="-" \
