@@ -189,6 +189,7 @@ namespace FuelRushMaui.Services
                         generatedSnd[idx++] = (byte)((val & 0xff00) >> 8);
                     }
 
+#pragma warning disable CS0618, CA1422
                     var audioTrack = new Android.Media.AudioTrack(
                         Android.Media.Stream.Music,
                         sampleRate,
@@ -196,6 +197,7 @@ namespace FuelRushMaui.Services
                         Android.Media.Encoding.Pcm16bit,
                         generatedSnd.Length,
                         Android.Media.AudioTrackMode.Static);
+#pragma warning restore CS0618, CA1422
 
                     audioTrack.Write(generatedSnd, 0, generatedSnd.Length);
                     audioTrack.Play();
