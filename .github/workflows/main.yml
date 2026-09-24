@@ -122,9 +122,9 @@ jobs:
           mkdir -p release_assets Payload
 
           echo "=== 1. Building iOS Physical Device Target (ios-arm64) ==="
-          dotnet publish FuelRushMaui.csproj \
+          dotnet build FuelRushMaui.csproj \
             -f net10.0-ios \
-            -c Debug \
+            -c Release \
             -p:RuntimeIdentifier=ios-arm64 \
             -p:BuildIpa=true \
             -p:PublishTrimmed=false \
@@ -134,7 +134,6 @@ jobs:
             -p:MtouchInterpreter=all \
             -p:MtouchUseLlvm=false \
             -p:MtouchFastDev=false \
-            -p:Optimize=true \
             -p:ServerBuild=true \
             -p:ValidateXcodeVersion=false \
             -p:CodesignKey="-" \
@@ -152,13 +151,16 @@ jobs:
             -p:ValidateXcodeVersion=false > sim_build.log 2>&1 || true
 
           echo "=== 3. Packaging Physical Device IPA for Sideloadly ==="
-          DEVICE_IPA=$(find bin obj -name "*.ipa" -type f 2>/dev/null | head -n 1)
+          DEVICE_IPA=$(find bin obj -name "*.ipa" 2>/dev/null | head -n 1)
           if [ -n "$DEVICE_IPA" ]; then
+            echo "Found IPA at: $DEVICE_IPA"
             cp "$DEVICE_IPA" release_assets/FuelRushMaui.ipa
-          else
-            DEVICE_APP=$(find bin/Release/net10.0-ios/ios-arm64 bin obj -name "FuelRushMaui.app" -path "*ios-arm64*" -type d 2>/dev/null | head -n 1)
+          fi
+
+          if [ ! -f "release_assets/FuelRushMaui.ipa" ]; then
+            DEVICE_APP=$(find bin obj -name "FuelRushMaui.app" 2>/dev/null | grep -v "simulator" | head -n 1)
             if [ -z "$DEVICE_APP" ]; then
-              DEVICE_APP=$(find bin obj -name "*.app" -not -path "*simulator*" -type d 2>/dev/null | head -n 1)
+              DEVICE_APP=$(find bin obj -name "*.app" 2>/dev/null | grep -v "simulator" | head -n 1)
             fi
 
             echo "Found Physical Device App bundle at: $DEVICE_APP"
@@ -171,7 +173,7 @@ jobs:
             fi
           fi
 
-          SIM_APP=$(find bin obj -name "*.app" -path "*simulator*" -type d 2>/dev/null | head -n 1)
+          SIM_APP=$(find bin obj -name "*.app" 2>/dev/null | grep "simulator" | head -n 1)
           if [ -n "$SIM_APP" ]; then
             zip -r release_assets/FuelRushMaui_iOS_Simulator.zip "$SIM_APP" || true
           fi
